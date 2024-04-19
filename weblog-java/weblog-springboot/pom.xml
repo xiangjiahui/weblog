@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.xiangjiahui</groupId>
+    <artifactId>weblog-springboot</artifactId>
+    <version>${revision}</version>
+    <name>weblog-springboot</name>
+    <description>前后端分离博客 WebLog By XJH</description>
+    <!--  多模块项目父工程打包模式必须指定为 pom -->
+    <!--  如果IDEA没有自动下载依赖,执行命令 mvn dependency:resolve  -->
+    <!--  Maven和IDEA版本适配问题,IDEA2021版本只能适配Maven3.6.3  -->
+    <packaging>pom</packaging>
+
+    <!-- 子模块管理   -->
+    <modules>
+        <module>weblog-web</module>
+        <module>weblog-admin</module>
+        <module>weblog-common</module>
+    </modules>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.6.3</version>
+        <relativePath/>
+    </parent>
+
+    <!--  版本号统一管理  -->
+    <properties>
+        <revision>1.0.0</revision>
+        <java.version>1.8</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+
+        <!--  依赖包版本  -->
+        <lombok.version>1.18.28</lombok.version>
+        <guava.version>31.1-jre</guava.version>
+        <commons-lang3.version>3.12.0</commons-lang3.version>
+        <jackson.version>2.15.2</jackson.version>
+    </properties>
+
+    <!-- 统一依赖管理   -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.xiangjiahui</groupId>
+                <artifactId>weblog-admin</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.xiangjiahui</groupId>
+                <artifactId>weblog-common</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <!-- 常用工具库 -->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+    <!-- 统一插件管理 -->
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <configuration>
+                        <excludes>
+                            <exclude>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok</artifactId>
+                            </exclude>
+                        </excludes>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <!--  使用阿里云的仓库  -->
+    <repositories>
+        <repository>
+            <id>alimaven</id>
+            <name>aliyun</name>
+            <url>https://maven.aliyun.com/nexus/content/groups/public/</url>
+        </repository>
+    </repositories>
+
+
+
+
+</project>
