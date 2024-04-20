@@ -1,4 +1,4 @@
-package com.xiangjiahui.weblog.common.aspect;
+package com.xiangjiahui.weblog.common.annotation;
 
 import java.lang.annotation.*;
 

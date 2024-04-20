@@ -1,6 +1,7 @@
 package com.xiangjiahui.weblog.common.aspect;
 
 
+import com.xiangjiahui.weblog.common.annotation.ApiOperationLog;
 import com.xiangjiahui.weblog.common.utils.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -22,7 +23,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ApiOperationLogAspect {
 
-    @Pointcut("@annotation(com.xiangjiahui.weblog.common.aspect.ApiOperationLog)")
+    @Pointcut("@annotation(com.xiangjiahui.weblog.common.annotation.ApiOperationLog)")
     public void pointCut(){}
 
 
@@ -30,7 +31,14 @@ public class ApiOperationLogAspect {
     public Object doAround(ProceedingJoinPoint joinPoint) throws Throwable{
         try {
             long startTime = System.currentTimeMillis();
-            //MDC
+
+            /**
+             * MDC是日志框架中的MDC（Mapped Diagnostic Context）的简称，是SLF4J和log4j1.2.16版本之后引入的。
+             * MDC是线程安全的，每个线程都有自己的MDC实例，所以可以在多线程环境下使用。
+             * MDC是日志框架提供的一种方案,它允许开发者将一些特定的数据(比如用户ID,请求ID等)存储到当前线程的上下文中,
+             * 使得这些数据可以在日志消息中使用。这对于跟踪多线程或高并发应用中的单个请求非常有用。
+             * 使用MDC,可以为每个请求分配一个唯一标识ID,并将该标识添加到每条日志消息中,从而方便的区分和跟踪每个请求的日志。
+             */
             MDC.put("traceId", UUID.randomUUID().toString());
 
             //获取请求的类名和方法名
@@ -47,17 +55,17 @@ public class ApiOperationLogAspect {
             String description = getApiOperationLogDescription(joinPoint);
 
             //打印请求相关参数
-            log.info("====== 请求开始: [{}],入参: {},请求类: {},请求方法: {} ",
+            log.info("====== 请求开始: [{}], 入参: {}, 请求类: {}, 请求方法: {} ",
                     description, jsonStr, className, methodName);
 
             //执行切点方法
             Object result = joinPoint.proceed();
 
             //执行耗时
-            long executionTime  = System.currentTimeMillis() - startTime;
+            long executionTime = System.currentTimeMillis() - startTime;
 
             // 打印出参等相关信息
-            log.info("====== 请求结束: [{}], 耗时: {}ms, 出参: {} ====================",
+            log.info("====== 请求结束: [{}], 耗时: {}ms, 出参: {} ",
                     description, executionTime, JsonUtil.toJsonString(result));
 
             return result;
