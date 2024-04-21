@@ -4,3 +4,9 @@ server:
 spring:
   profiles:
     active: dev
+
+jwt:
+  # 签发人
+  issuer: xiangjiahui
+  # 密钥
+  secret: 4IaJdbh8IuV9toABjxJlPrxZm6yjgkQjsgwNgOoTyZ4rH5YTaiHCOAYPfWE2gcOcHRuG1joYGAfCYwqn5opUxg==
