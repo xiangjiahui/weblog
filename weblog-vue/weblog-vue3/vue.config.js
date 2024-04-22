@@ -18,5 +18,14 @@ module.exports = defineConfig({
         resolvers: [ElementPlusResolver()],
       }),
     ]
-  }
+  },
+  // devServer: {
+  //   proxy: {
+  //     '/api': {
+  //       target: 'http://localhost:8088',
+  //       changeOrigin: true,
+  //       rewrite: (path) => path.replace(/^\/api/, ''),
+  //     },
+  //   }
+  // },
 })

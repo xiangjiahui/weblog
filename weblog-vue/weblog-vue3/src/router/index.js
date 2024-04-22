@@ -1,6 +1,7 @@
 import Index from '@/pages/frontend/Index'
 import {createRouter,createWebHashHistory} from "vue-router"
 import Login from '@/pages/admin/Login'
+import AdminIndex from '@/pages/admin/AdminIndex'
 
 const routers = [
     {
@@ -15,6 +16,13 @@ const routers = [
         component: Login,
         meta: {
             title: 'Weblog 登录页'
+        }
+    },
+    {
+        path: '/admin/index',
+        component: AdminIndex,
+        meta: {
+            title: 'Admin 后台首页'
         }
     }
 ]

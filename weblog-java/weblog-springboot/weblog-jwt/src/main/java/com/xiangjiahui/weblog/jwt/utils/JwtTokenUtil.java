@@ -41,6 +41,13 @@ public class JwtTokenUtil implements InitializingBean {
 
 
     /**
+     * Token 失效时间 (分钟)
+     */
+    @Value("${jwt.tokenExpireTime}")
+    private Long tokenExpireTime;
+
+
+    /**
      * 解码配置文件中的配置的Base64编码的 Key 为密钥
      */
     @Value("${jwt.secret}")
@@ -68,7 +75,7 @@ public class JwtTokenUtil implements InitializingBean {
         LocalDateTime now = LocalDateTime.now();
 
         // Token 1 小时后失效
-        LocalDateTime expireTime = now.plusHours(1);
+        LocalDateTime expireTime = now.plusHours(tokenExpireTime);
 
         return Jwts.builder().setSubject(username).setIssuer(issuer)
                 .setIssuedAt(Date.from(now.atZone(ZoneId.systemDefault()).toInstant()))
@@ -90,6 +97,34 @@ public class JwtTokenUtil implements InitializingBean {
             throw new CredentialsExpiredException("Token 失效");
         }
     }
+
+
+    /**
+     * 校验 Token 是否可用
+     * @param token
+     * @return
+     */
+    public void validateToken(String token) {
+        jwtParser.parseClaimsJws(token);
+    }
+
+
+
+    /**
+     * 解析 Token 获取用户名
+     * @param token
+     * @return
+     */
+    public String getUsernameFromToken(String token) {
+        try {
+            Claims claims = jwtParser.parseClaimsJws(token).getBody();
+            return claims.getSubject();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
 
     /**

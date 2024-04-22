@@ -4,6 +4,9 @@ import router from '@/router';
 import '@/assets/main.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import 'animate.css';
+// 导入全局路由守卫
+import '@/permission'
+import 'nprogress/nprogress.css'
 
 const app = createApp(App);
 
