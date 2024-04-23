@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getToken } from '@/composables/auth';
+import { getToken } from '@/composables/cookie';
 import {showMessage} from '@/composables/util';
 
 const log_service = axios.create({

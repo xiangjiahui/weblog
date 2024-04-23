@@ -58,7 +58,7 @@ import {login} from '@/api/admin/user';
 import {reactive, ref, onMounted, onBeforeUnmount} from 'vue';
 import {useRouter} from 'vue-router'
 import {showMessage} from "@/composables/util";
-import {setToken} from "@/composables/auth";
+import {setToken} from "@/composables/cookie";
 
 const router = useRouter();
 
