@@ -7,6 +7,9 @@ import 'animate.css';
 // 导入全局路由守卫
 import '@/permission'
 import 'nprogress/nprogress.css'
+import { createPinia } from 'pinia'
+
+const pinia = createPinia()
 
 const app = createApp(App);
 
@@ -16,4 +19,5 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 }
 
 app.use(router)
+app.use(pinia)
 app.mount('#app')

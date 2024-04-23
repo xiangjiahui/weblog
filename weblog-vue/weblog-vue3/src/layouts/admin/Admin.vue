@@ -1,0 +1,47 @@
+<template>
+  <!-- 外层容器 -->
+  <el-container>
+
+    <!-- 左边侧边栏 -->
+    <el-aside :width='menuStore.menuWidth' class="transition-all">
+      <AdminMenu></AdminMenu>
+    </el-aside>
+
+    <!-- 右边主内容区域 -->
+    <el-container>
+      <!-- 顶栏容器 -->
+      <el-header>
+        <AdminHeader></AdminHeader>
+      </el-header>
+
+      <el-main>
+        <AdminTagList></AdminTagList>
+        <!-- 主内容（根据路由动态展示不同页面） -->
+        <router-view></router-view>
+      </el-main>
+
+      <!-- 底栏容器 -->
+      <el-footer>
+        <AdminFooter></AdminFooter>
+      </el-footer>
+
+    </el-container>
+  </el-container>
+</template>
+
+<script setup>
+import AdminMenu from '@/layouts/admin/components/AdminMenu';
+import AdminHeader from '@/layouts/admin/components/AdminHeader';
+import AdminTagList from '@/layouts/admin/components/AdminTagList';
+import AdminFooter from '@/layouts/admin/components/AdminFooter';
+import { useMenuStore } from '@/stores/menu'
+
+const menuStore = useMenuStore()
+
+</script>
+
+<style scoped>
+.el-header {
+  padding: 0 !important;
+}
+</style>
