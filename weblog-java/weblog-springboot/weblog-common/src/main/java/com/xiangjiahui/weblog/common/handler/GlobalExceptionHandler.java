@@ -1,6 +1,7 @@
 package com.xiangjiahui.weblog.common.handler;
 
 
+import com.xiangjiahui.weblog.common.exception.UserNotFoundException;
 import com.xiangjiahui.weblog.common.utils.HttpUtil;
 import com.xiangjiahui.weblog.common.utils.Response;
 import lombok.extern.slf4j.Slf4j;
@@ -45,5 +46,12 @@ public class GlobalExceptionHandler {
         // 捕获到鉴权失败异常，主动抛出，交给 RestAccessDeniedHandler 去处理
         log.info("============= 捕获到 AccessDeniedException");
         throw e;
+    }
+
+
+    @ExceptionHandler(value = UserNotFoundException.class)
+    public ResponseEntity<Response> findUserException(UserNotFoundException e) {
+        log.error("{} request error, errorMessage: {} ", HttpUtil.getURL(), e.getMessage());
+        return ResponseEntity.badRequest().body(Response.fail(e.getMessage()));
     }
 }

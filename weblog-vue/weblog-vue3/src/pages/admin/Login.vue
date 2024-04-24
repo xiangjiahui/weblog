@@ -59,8 +59,10 @@ import {reactive, ref, onMounted, onBeforeUnmount} from 'vue';
 import {useRouter} from 'vue-router'
 import {showMessage} from "@/composables/util";
 import {setToken} from "@/composables/cookie";
+import { useUserStore } from '@/stores/user'
 
 const router = useRouter();
+const userStore = useUserStore()
 
 // 定义相应式的表单对象
 const form = reactive({
@@ -104,13 +106,15 @@ const onSubmit = () => {
       console.log(res)
 
       if (res.success === true) {
-
+        showMessage('登录成功')
         // 存储 Token 到 Cookie 中
         let token = res.data.token
 
         setToken(token)
 
-        showMessage('登录成功')
+        // 获取用户信息，并存储到全局状态中
+        userStore.setUserInfo()
+
         router.push('/admin/index')
       } else {
         // 获取服务端返回的错误消息
@@ -120,7 +124,7 @@ const onSubmit = () => {
       }
     }).catch(error => {
       if (error.message === '"Network Error"') {
-        return
+
       }
     }).finally(() => {
       loading.value = false

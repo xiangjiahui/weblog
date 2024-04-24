@@ -7,9 +7,8 @@ import 'animate.css';
 // 导入全局路由守卫
 import '@/permission'
 import 'nprogress/nprogress.css'
-import { createPinia } from 'pinia'
+import pinia from '@/stores'
 
-const pinia = createPinia()
 
 const app = createApp(App);
 

@@ -5,3 +5,11 @@ export function login(username,password) {
         username,password
     })
 }
+
+export function getUserInfo(){
+    return log_service.post('/admin/user/getUserInfo')
+}
+
+export function updateAdminPassword(data) {
+    return log_service.post('/admin/password/update',data)
+}

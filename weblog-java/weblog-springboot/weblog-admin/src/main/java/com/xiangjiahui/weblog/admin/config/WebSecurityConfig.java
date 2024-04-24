@@ -11,6 +11,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
 
 
 @Configuration
@@ -41,6 +46,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 formLogin().disable() // 禁用表单登录
                 .apply(jwtAuthenticationSecurityConfig) // 设置用户登录认证相关配置
                 .and()
+                .cors().configurationSource(corsConfigurationSource()).and() // 解决跨域问题
                 .authorizeHttpRequests()
                 .mvcMatchers("/admin/**").authenticated() // 认证所有以 /admin 为前缀的 URL 资源
                 .anyRequest().permitAll() // 其他都需要放行，无需认证
@@ -55,6 +61,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public TokenAuthenticationFilter tokenAuthenticationFilter() {
         return new TokenAuthenticationFilter();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowedMethods(Arrays.asList("GET", "POST"));// 支持请求方式
+        config.addAllowedOriginPattern("*");// 支持跨域
+        config.setAllowCredentials(true);// cookie
+        config.addAllowedHeader("*");// 允许请求头信息
+        config.addExposedHeader("*");// 暴露的头部信息
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);// 添加地址映射
+        return source;
     }
 
 }

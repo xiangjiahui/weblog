@@ -11,7 +11,7 @@
 
     <!-- 右侧下拉菜单 -->
     <span class="ml-auto flex items-center justify-center h-[32px] w-[32px]">
-      <el-dropdown>
+      <el-dropdown @command="handleCloseTab">
         <span class="el-dropdown-link">
           <el-icon>
             <arrow-down/>
@@ -19,8 +19,8 @@
         </span>
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item>关闭其他</el-dropdown-item>
-            <el-dropdown-item>关闭全部</el-dropdown-item>
+            <el-dropdown-item command="closeOthers">关闭其他</el-dropdown-item>
+            <el-dropdown-item command="closeAll">关闭全部</el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>

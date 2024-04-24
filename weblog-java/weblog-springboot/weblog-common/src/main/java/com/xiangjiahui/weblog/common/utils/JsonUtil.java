@@ -22,4 +22,13 @@ public class JsonUtil {
             return obj.toString();
         }
     }
+
+    public static Object toObject(String json, Class<?> clazz) {
+        try {
+            return instance.convertValue(json, clazz);
+        }catch (IllegalArgumentException e){
+            log.error("json反序列化失败", e);
+            return null;
+        }
+    }
 }
