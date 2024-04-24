@@ -9,7 +9,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
@@ -35,7 +38,6 @@ public class AdminUserController {
     @PostMapping("/user/getUserInfo")
     @ApiOperation(value = "查询用户信息")
     @ApiOperationLog(description = "查询用户信息")
-    @CrossOrigin
     public ResponseEntity<Response> findUser() {
         return ResponseEntity.ok().body(Response.success(adminUserService.findUser()));
     }

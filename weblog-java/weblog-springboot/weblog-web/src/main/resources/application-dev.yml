@@ -16,7 +16,16 @@ spring:
       connection-timeout: 30000  # Hikari连接池中获取连接的超时时间，默认为30秒。
       connection-test-query: select 1 # Hikari连接池中测试连接的查询语句，默认为“select 1”
 
+  redis:
+    host: localhost
+    port: 6379
+    database: 0
+    timeout: 3000
+
   security:
     user:
       name: admin
       password: 123456
+
+api:
+  limit: false # 是否开启接口限流
