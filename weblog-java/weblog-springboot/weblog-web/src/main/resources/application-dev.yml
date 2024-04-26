@@ -26,6 +26,3 @@ spring:
     user:
       name: admin
       password: 123456
-
-api:
-  limit: false # 是否开启接口限流

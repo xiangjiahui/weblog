@@ -27,7 +27,8 @@ log_service.interceptors.response.use(function (response) {
     return response.data
 },function (error) {
     console.log(error)
-    let errorMsg =  error.message === 'Network Error' ? '网络连接出错' : '请求失败'
+    let errorMsg =  error.response.data.message ? error.response.data.message : '请求错误'
+    console.log(errorMsg)
     showMessage(errorMsg,'error')
 
     return Promise.reject(error)

@@ -2,6 +2,7 @@ package com.xiangjiahui.weblog.common.handler;
 
 
 import com.xiangjiahui.weblog.common.exception.ApiRequestLimitException;
+import com.xiangjiahui.weblog.common.exception.BusinessException;
 import com.xiangjiahui.weblog.common.exception.UserNotFoundException;
 import com.xiangjiahui.weblog.common.utils.HttpUtil;
 import com.xiangjiahui.weblog.common.utils.Response;
@@ -32,7 +33,7 @@ public class GlobalExceptionHandler {
             errors.forEach(error -> {
                 stringBuilder.append(error.getField()).append(" ")
                         .append(error.getDefaultMessage()).append(", 当前值: '")
-                        .append(error.getRejectedValue()).append("': ");
+                        .append(error.getRejectedValue()).append("'; ");
             });
         });
 
@@ -59,6 +60,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = ApiRequestLimitException.class)
     public ResponseEntity<Response> apiRequestLimitException(ApiRequestLimitException e) {
+        log.error("{} request error, errorMessage: {} ", HttpUtil.getURL(), e.getMessage());
+        return ResponseEntity.badRequest().body(Response.fail(e.getMessage()));
+    }
+
+
+    @ExceptionHandler(value = BusinessException.class)
+    public ResponseEntity<Response> addCategoryException(BusinessException e) {
         log.error("{} request error, errorMessage: {} ", HttpUtil.getURL(), e.getMessage());
         return ResponseEntity.badRequest().body(Response.fail(e.getMessage()));
     }
