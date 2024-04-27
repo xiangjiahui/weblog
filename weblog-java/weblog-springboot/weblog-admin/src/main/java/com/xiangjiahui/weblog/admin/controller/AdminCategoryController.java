@@ -10,6 +10,7 @@ import com.xiangjiahui.weblog.common.utils.Response;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,6 +47,7 @@ public class AdminCategoryController {
     @PostMapping("/category/delete")
     @ApiOperation(value = "根据ID删除分类")
     @ApiOperationLog(description = "根据ID删除分类")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Response> deleteCategory(@RequestParam(name = "id") Long id) {
         int delete = categoryService.deleteCategoryByID(id);
         return delete == 0 ? ResponseEntity.badRequest().body(Response.fail("删除失败或者不存在当前分类ID")) :

@@ -44,10 +44,10 @@ public class GlobalExceptionHandler {
 
 
     @ExceptionHandler(value = AccessDeniedException.class)
-    public void throwAccessDeniedException(AccessDeniedException e) throws AccessDeniedException {
+    public ResponseEntity<Response> accessDeniedException(AccessDeniedException e) {
         // 捕获到鉴权失败异常，主动抛出，交给 RestAccessDeniedHandler 去处理
         log.info("============= 捕获到 AccessDeniedException");
-        throw e;
+        return ResponseEntity.badRequest().body(Response.fail("没有权限操作此功能"));
     }
 
 
@@ -70,4 +70,14 @@ public class GlobalExceptionHandler {
         log.error("{} request error, errorMessage: {} ", HttpUtil.getURL(), e.getMessage());
         return ResponseEntity.badRequest().body(Response.fail(e.getMessage()));
     }
+
+
+//    @ExceptionHandler(value = BatchUpdateException.class)
+//    public ResponseEntity<Response> batchUpdateException(Exception e) {
+//        log.error("{} request error, errorMessage: {} ", HttpUtil.getURL(), e.getMessage());
+//        if (e.getMessage().contains("Duplicate entry")) {
+//            return ResponseEntity.badRequest().body(Response.fail("该分类已存在"));
+//        }
+//        return ResponseEntity.badRequest().body(Response.fail(e.getMessage()));
+//    }
 }

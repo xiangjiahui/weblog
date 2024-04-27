@@ -57,43 +57,49 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        // 从请求头中获取 Key 为 Authorization 的 Token 值
-        String header = request.getHeader(tokenHeaderKey);
+        // 过滤请求URL,只有admin的接口才需要校验
+        String url = request.getRequestURI();
 
-        // 判断value值是否以 Bearer 开头
-        if (StringUtils.startsWith(header, tokenPrefix)) {
-//            String token = StringUtils.substringAfter(header, "Bearer ");
-            String token = StringUtils.substring(header, 7);
-            log.info("Token: {}", token);
+        if (url.startsWith("/admin")) {
+            // 从请求头中获取 Key 为 Authorization 的 Token 值
+            String header = request.getHeader(tokenHeaderKey);
 
-            // 判空
-            if (StringUtils.isNotBlank(token)) {
-                try {
-                    // 校验Token 是否可用,若解析异常，针对不同异常做出不同的响应参数
-                    jwtTokenUtil.validateToken(token);
-                } catch (SignatureException | MalformedJwtException | UnsupportedJwtException | IllegalArgumentException e) {
-                    // 抛出异常，统一让 AuthenticationEntryPoint 处理响应参数
-                    authenticationEntryPoint.commence(request, response, new AuthenticationServiceException("Token 不可用"));
-                } catch (ExpiredJwtException e) {
-                    authenticationEntryPoint.commence(request, response, new AuthenticationServiceException("Token 已过期"));
-                    ;
+            // 判断value值是否以 Bearer 开头
+            if (StringUtils.startsWith(header, tokenPrefix)) {
+                // String token = StringUtils.substringAfter(header, "Bearer ");
+                String token = StringUtils.substring(header, 7);
+                log.info("Token: {}", token);
+
+                // 判空
+                if (StringUtils.isNotBlank(token)) {
+                    try {
+                        // 校验Token 是否可用,若解析异常，针对不同异常做出不同的响应参数
+                        jwtTokenUtil.validateToken(token);
+                    } catch (SignatureException | MalformedJwtException | UnsupportedJwtException | IllegalArgumentException e) {
+                        // 抛出异常，统一让 AuthenticationEntryPoint 处理响应参数
+                        authenticationEntryPoint.commence(request, response, new AuthenticationServiceException("Token 不可用"));
+                    } catch (ExpiredJwtException e) {
+                        authenticationEntryPoint.commence(request, response, new AuthenticationServiceException("Token 已过期"));
+                        ;
+                    }
+                }
+
+                String username = jwtTokenUtil.getUsernameFromToken(token);
+
+                if (StringUtils.isNotBlank(username) && Objects.isNull(SecurityContextHolder.getContext().getAuthentication())) {
+                    // 根据用户名获取用户详细信息
+                    UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+                    // 将用户信息存入 authentication, 方便后续校验
+                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+
+                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+                    // 将authentication 存入 ThreadLocal, 方便后续获取
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
             }
 
-            String username = jwtTokenUtil.getUsernameFromToken(token);
-
-            if (StringUtils.isNotBlank(username) && Objects.isNull(SecurityContextHolder.getContext().getAuthentication())) {
-                // 根据用户名获取用户详细信息
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-
-                // 将用户信息存入 authentication, 方便后续校验
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
-                // 将authentication 存入 ThreadLocal, 方便后续获取
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            }
         }
 
         // 继续执行写一个过滤器

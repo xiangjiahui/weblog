@@ -12,7 +12,6 @@ import com.xiangjiahui.weblog.common.model.CategoryPageListRspVO;
 import com.xiangjiahui.weblog.common.model.vo.CategorySelectVO;
 import com.xiangjiahui.weblog.common.utils.PageResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,24 +53,11 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
         // 获取当前页、以及每页需要展示的数据数量
         Long currentPage = vo.getCurrentPage();
         Long size = vo.getSize();
-
-        // 分页对象(查询第几页、每页多少数据)
-        Page<CategoryDO> page = new Page<>(currentPage, size);
-
-        LambdaQueryWrapper<CategoryDO> lambdaWrapper = new LambdaQueryWrapper<>();
-
         String name = vo.getName();
         LocalDate startDate = vo.getStartDate();
         LocalDate endDate = vo.getEndDate();
 
-        lambdaWrapper.like(StringUtils.isNotBlank(name), CategoryDO::getName, name.trim())
-                .ge(Objects.nonNull(startDate), CategoryDO::getCreateTime, startDate) // 大于等于
-                .le(Objects.nonNull(endDate), CategoryDO::getCreateTime, endDate) // 小于等于
-                //使用select指定查询哪些字段
-                .select(CategoryDO::getId, CategoryDO::getName, CategoryDO::getCreateTime)
-                .orderByDesc(CategoryDO::getCreateTime);
-
-        Page<CategoryDO> categoryDOPage = categoryMapper.selectPage(page, lambdaWrapper);
+        Page<CategoryDO> categoryDOPage = categoryMapper.getPageList(currentPage, size, name, startDate, endDate);
 
         // DO转VO
         List<CategoryPageListRspVO> collect = categoryDOPage.getRecords().stream().map(categoryDO -> {
