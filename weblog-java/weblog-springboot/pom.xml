@@ -48,6 +48,7 @@
         <fastjson.version>1.2.83</fastjson.version>
         <!-- minio对象存储服务 -->
         <minio.version>8.2.1</minio.version>
+        <mapstruct.version>1.5.5.Final</mapstruct.version>
     </properties>
 
     <!-- 统一依赖管理   -->
@@ -130,6 +131,12 @@
                 <groupId>io.minio</groupId>
                 <artifactId>minio</artifactId>
                 <version>${minio.version}</version>
+            </dependency>
+            <!-- Mapstruct 属性映射 -->
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId>
+                <version>${mapstruct.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

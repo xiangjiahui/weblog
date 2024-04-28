@@ -1,12 +1,18 @@
 package com.xiangjiahui.weblog.common.utils;
 
 import com.xiangjiahui.weblog.common.config.minio.MinioProperties;
+import io.minio.GetObjectArgs;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
+import io.minio.RemoveObjectArgs;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.InputStream;
+import java.net.URLEncoder;
 import java.util.UUID;
 
 @Component
@@ -68,4 +74,48 @@ public class MinioUtil {
         log.info("==> 上传文件至 Minio 成功，访问路径: {}", url);
         return url;
     }
+
+
+    /**
+     * 下载文件
+     * @param response
+     * @param fileName
+     * @throws Exception
+     */
+    public void downloadFile(HttpServletResponse response, String fileName) throws Exception{
+        InputStream inputStream = minioClient.getObject(GetObjectArgs.builder()
+                .bucket(minioProperties.getBucketName())
+                .object(fileName)
+                .build());
+        ServletOutputStream outputStream = response.getOutputStream();
+        response.setContentType("application/octet-stream");
+        response.setCharacterEncoding("utf-8");
+        response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
+        byte[] bytes = new byte[1024];
+        int len;
+        while ((len = inputStream.read(bytes)) != -1) {
+            outputStream.write(bytes, 0, len);
+        }
+        outputStream.flush();
+        outputStream.close();
+        inputStream.close();
+    }
+
+
+    /**
+     * 删除文件
+     * @param fileName
+     */
+    public boolean deleteFile(String fileName) {
+        try {
+            minioClient.removeObject(RemoveObjectArgs.builder()
+                    .bucket(minioProperties.getBucketName()).object(fileName).build());
+        }catch (Exception e){
+            log.error("文件删除失败,exception: {}, fileName: {}",e.getMessage(),fileName);
+            return false;
+        }
+        log.info("删除成功,fileName: {}",fileName);
+        return true;
+    }
+
 }

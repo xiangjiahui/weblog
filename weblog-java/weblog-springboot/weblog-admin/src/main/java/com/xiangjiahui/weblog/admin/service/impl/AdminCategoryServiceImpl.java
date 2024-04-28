@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 
@@ -57,18 +58,32 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
         LocalDate startDate = vo.getStartDate();
         LocalDate endDate = vo.getEndDate();
 
-        Page<CategoryDO> categoryDOPage = categoryMapper.getPageList(currentPage, size, name, startDate, endDate);
+        CompletableFuture<Page<CategoryDO>> pageFuture = CompletableFuture.supplyAsync(() -> {
+            return categoryMapper.getPageList(currentPage, size, name, startDate, endDate);
+        });
 
-        // DO转VO
-        List<CategoryPageListRspVO> collect = categoryDOPage.getRecords().stream().map(categoryDO -> {
-            CategoryPageListRspVO rspVO = new CategoryPageListRspVO();
-            rspVO.setId(categoryDO.getId());
-            rspVO.setName(categoryDO.getName());
-            rspVO.setCreateTime(categoryDO.getCreateTime());
-            return rspVO;
-        }).collect(Collectors.toList());
-
-        return PageResponse.success(categoryDOPage,collect);
+        CompletableFuture<PageResponse> result = pageFuture.thenApplyAsync(categoryDOPage -> {
+            List<CategoryPageListRspVO> collect = categoryDOPage.getRecords().stream().map(categoryDO -> {
+                CategoryPageListRspVO rspVO = new CategoryPageListRspVO();
+                rspVO.setId(categoryDO.getId());
+                rspVO.setName(categoryDO.getName());
+                rspVO.setCreateTime(categoryDO.getCreateTime());
+                return rspVO;
+            }).collect(Collectors.toList());
+            return PageResponse.success(categoryDOPage, collect);
+        });
+        return result.join();
+//        Page<CategoryDO> categoryDOPage = categoryMapper.getPageList(currentPage, size, name, startDate, endDate);
+//
+//        List<CategoryPageListRspVO> collect = categoryDOPage.getRecords().stream().map(categoryDO -> {
+//            CategoryPageListRspVO rspVO = new CategoryPageListRspVO();
+//            rspVO.setId(categoryDO.getId());
+//            rspVO.setName(categoryDO.getName());
+//            rspVO.setCreateTime(categoryDO.getCreateTime());
+//            return rspVO;
+//        }).collect(Collectors.toList());
+//
+//        return PageResponse.success(categoryDOPage, collect);
     }
 
 

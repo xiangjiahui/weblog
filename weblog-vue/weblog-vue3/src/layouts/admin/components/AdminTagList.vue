@@ -1,6 +1,6 @@
 <template>
   <!-- 左边：标签导航栏 -->
-  <div class="h-[44px] px-2 right-0 z-50 flex items-center bg-white transition-all duration-300 shadow"
+  <div class="fixed top-[64px] h-[44px] px-2 right-0 z-50 flex items-center bg-white transition-all duration-300 shadow"
        :style="{left: menuStore.menuWidth}">
     <el-tabs v-model="activeTab" type="card" class="demo-tabs" @tab-remove="removeTab"
           @tab-change="tabChange"  style="min-width: 10px;">
@@ -39,17 +39,17 @@ const { menuStore, activeTab, tabList, tabChange, removeTab, handleCloseTab } = 
 <style scoped>
 .el-tabs__item {
   font-size: 12px;
-  border: 1px solid #d8dce5 !important;
-  border-radius: 3px !important;
+  border: 1px solid #d8dce5!important;
+  border-radius: 3px!important;
 }
 
-.el-tabs--card > .el-tabs__header .el-tabs__item {
-  margin-left: 0.1rem !important;
-  margin-right: 0.1rem !important;
+.el-tabs--card>.el-tabs__header .el-tabs__item {
+  margin-left: 0.1rem!important;
+  margin-right: 0.1rem!important;
 }
 
 .el-tabs__item.is-active {
-  background-color: var(--el-color-primary) !important;
+  background-color: var(--el-color-primary)!important;
   color: #fff;
 }
 
@@ -72,18 +72,18 @@ const { menuStore, activeTab, tabList, tabChange, removeTab, handleCloseTab } = 
   margin-bottom: 0;
 }
 
-.el-tabs--card > .el-tabs__header .el-tabs__nav {
+.el-tabs--card>.el-tabs__header .el-tabs__nav {
   border: 0;
 }
 
-.el-tabs--card > .el-tabs__header .el-tabs__item {
+.el-tabs--card>.el-tabs__header .el-tabs__item {
   height: 32px;
   line-height: 32px;
   border: 0;
   background: #fff;
 }
 
-.el-tabs--card > .el-tabs__header {
+.el-tabs--card>.el-tabs__header {
   border: 0;
 }
 

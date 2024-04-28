@@ -14,6 +14,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 /**
@@ -41,13 +42,13 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserDO userDO = userMapper.findByUsernameAfter(username);
+        UserDO userDO = CompletableFuture.supplyAsync(()-> userMapper.findByUsernameAfter(username)).join();
 
         if (Objects.isNull(userDO)){
             throw new UsernameNotFoundException("用户不存在");
         }
 
-        List<UserRoleDO> roleDOS = userRoleMapper.selectByUsername(username);
+        List<UserRoleDO> roleDOS = CompletableFuture.supplyAsync(() -> userRoleMapper.selectByUsername(username)).join();
 
         String[] roleArr = {};
 
