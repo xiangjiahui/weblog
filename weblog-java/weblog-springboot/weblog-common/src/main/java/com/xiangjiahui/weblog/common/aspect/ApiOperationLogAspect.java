@@ -29,7 +29,6 @@ public class ApiOperationLogAspect {
 
     @Around("pointCut()")
     public Object doAround(ProceedingJoinPoint joinPoint) throws Throwable{
-        Object result = null;
         try {
             long startTime = System.currentTimeMillis();
 
@@ -61,7 +60,7 @@ public class ApiOperationLogAspect {
                     description, jsonStr, className, methodName);
 
             //执行切点方法
-            result = joinPoint.proceed();
+            Object result = joinPoint.proceed();
 
             //执行耗时
             long executionTime = System.currentTimeMillis() - startTime;
@@ -69,13 +68,10 @@ public class ApiOperationLogAspect {
             // 打印出参等相关信息
             log.info("====== 请求结束: [{}], 耗时: {}ms, 出参: {} ",
                     description, executionTime, JsonUtil.toJsonString(result));
-
-        }catch (Exception e){
-            log.error(e.getMessage());
-        } finally {
+            return result;
+        }finally {
             MDC.clear();
         }
-        return result;
     }
 
 

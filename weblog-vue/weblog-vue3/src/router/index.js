@@ -7,6 +7,7 @@ import ArticleList from '@/pages/admin/Article-List'
 import TagList from '@/pages/admin/Tag-List'
 import BlogSetting from '@/pages/admin/Blog-Setting'
 import CategoryList from '@/pages/admin/Category-List'
+import MenuList from '@/pages/admin/Menu-List'
 
 const routers = [
     {
@@ -60,6 +61,13 @@ const routers = [
                 component: BlogSetting,
                 meta: {
                     title: '博客设置'
+                }
+            },
+            {
+                path: '/admin/menu/setting',
+                component: MenuList,
+                meta: {
+                    title: '菜单设置'
                 }
             }
         ]

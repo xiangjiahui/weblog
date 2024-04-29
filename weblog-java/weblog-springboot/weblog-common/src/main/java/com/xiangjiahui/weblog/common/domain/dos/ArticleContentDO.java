@@ -1,5 +1,6 @@
 package com.xiangjiahui.weblog.common.domain.dos;
 
+
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -7,22 +8,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-@TableName("t_menu")
-public class MenuDO {
+@NoArgsConstructor
+@TableName("t_article_content")
+public class ArticleContentDO {
 
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    private String name;
+    private Long articleId;
 
-    private String path;
-
-    private String icon;
-
-    private LocalDateTime createTime;
+    private String content;
 }

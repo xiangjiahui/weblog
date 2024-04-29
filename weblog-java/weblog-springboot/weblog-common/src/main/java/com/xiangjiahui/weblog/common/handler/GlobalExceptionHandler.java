@@ -67,7 +67,7 @@ public class GlobalExceptionHandler {
 
 
     @ExceptionHandler(value = BusinessException.class)
-    public ResponseEntity<Response> addCategoryException(BusinessException e) {
+    public ResponseEntity<Response> businessException(BusinessException e) {
         log.error("{} request error, errorMessage: {} ", HttpUtil.getURL(), e.getMessage());
         return ResponseEntity.badRequest().body(Response.fail(e.getMessage()));
     }

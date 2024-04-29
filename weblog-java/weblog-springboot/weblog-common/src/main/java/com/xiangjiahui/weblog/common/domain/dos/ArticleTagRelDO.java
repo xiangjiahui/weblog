@@ -7,22 +7,19 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
+/**
+ * 文章标签关系
+ */
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-@TableName("t_menu")
-public class MenuDO {
+@NoArgsConstructor
+@TableName("t_article_tag_rel")
+public class ArticleTagRelDO {
 
     @TableId(type = IdType.AUTO)
     private Long id;
 
-    private String name;
+    private Long articleId;
 
-    private String path;
-
-    private String icon;
-
-    private LocalDateTime createTime;
+    private Long tagId;
 }
