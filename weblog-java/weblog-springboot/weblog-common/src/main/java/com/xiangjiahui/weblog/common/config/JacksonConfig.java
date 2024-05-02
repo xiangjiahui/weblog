@@ -4,6 +4,7 @@ package com.xiangjiahui.weblog.common.config;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
@@ -52,6 +53,8 @@ public class JacksonConfig {
 
         // 设置凡是为 null 的字段，返参中均不返回，请根据项目组约定是否开启
          objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        //如果是空对象的时候,不抛异常
+        objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
 
         return objectMapper;
     }

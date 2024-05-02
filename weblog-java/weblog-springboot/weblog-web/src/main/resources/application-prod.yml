@@ -2,7 +2,7 @@ spring:
   datasource:
     #    type: com.mysql.cj.jdbc.MysqlDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/weblog?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false&zeroDateTimeBehavior=convertToNull&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://192.168.76.129:3306/weblog?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false&zeroDateTimeBehavior=convertToNull&allowPublicKeyRetrieval=true
     username: root
     password: XJH9901042832
     hikari: # HikariCP连接池配置,这是SpringBoot2.x默认使用的连接池,它是一个高性能的连接池实现 , 同时，它号称是速度最快的连接池
@@ -17,3 +17,13 @@ spring:
 
 logging:
   config: classpath:logback-weblog.xml
+
+server:
+  port: 8088
+
+#minio
+minio:
+  endpoint: http://192.168.76.129:9001
+  accessKey: minioadmin
+  secretKey: minioadmin
+  bucketName: weblog
