@@ -29,6 +29,6 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
             ResultUtil.fail(response, HttpStatus.UNAUTHORIZED.value(), Response.unauthorized("未授权,请先登录"));
         }
 
-        ResultUtil.fail(response, HttpStatus.UNAUTHORIZED.value(), Response.fail(authException.getMessage()));
+        ResultUtil.fail(response, HttpStatus.UNAUTHORIZED.value(), Response.unauthorized(authException.getMessage()));
     }
 }

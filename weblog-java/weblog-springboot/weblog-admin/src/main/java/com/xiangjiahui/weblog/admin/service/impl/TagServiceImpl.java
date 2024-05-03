@@ -3,9 +3,13 @@ package com.xiangjiahui.weblog.admin.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xiangjiahui.weblog.admin.domains.vo.tag.SearchTagsReqVO;
+import com.xiangjiahui.weblog.admin.domains.vo.tag.SelectRspVO;
 import com.xiangjiahui.weblog.admin.domains.vo.tag.TagReqVO;
 import com.xiangjiahui.weblog.admin.service.TagService;
+import com.xiangjiahui.weblog.common.domain.dos.ArticleTagRelDO;
 import com.xiangjiahui.weblog.common.domain.dos.TagDO;
+import com.xiangjiahui.weblog.common.domain.mapper.ArticleTagRelMapper;
 import com.xiangjiahui.weblog.common.domain.mapper.TagMapper;
 import com.xiangjiahui.weblog.common.exception.BusinessException;
 import com.xiangjiahui.weblog.common.model.TagPageListReqVO;
@@ -14,6 +18,7 @@ import com.xiangjiahui.weblog.common.model.vo.TagSelectVO;
 import com.xiangjiahui.weblog.common.utils.PageResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -27,8 +32,11 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, TagDO> implements Tag
 
     private final TagMapper tagMapper;
 
-    public TagServiceImpl(TagMapper tagMapper) {
+    private final ArticleTagRelMapper articleTagRelMapper;
+
+    public TagServiceImpl(TagMapper tagMapper, ArticleTagRelMapper articleTagRelMapper) {
         this.tagMapper = tagMapper;
+        this.articleTagRelMapper = articleTagRelMapper;
     }
 
 
@@ -77,8 +85,16 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, TagDO> implements Tag
 
     @Override
     public int deleteTagByID(Long id) {
-        if (Objects.isNull(id) || id == 0L){
-            throw new BusinessException("标签ID不能为空");
+//        if (Objects.isNull(id) || id == 0L){
+//            throw new BusinessException("标签ID不能为空");
+//        }
+
+        // 校验该标签下是否有关联的文章，若有，则不允许删除，提示用户需要先删除标签下的文章
+        ArticleTagRelDO articleTagRelDO = articleTagRelMapper.selectOneByTagId(id);
+
+        if (Objects.nonNull(articleTagRelDO)) {
+            log.warn("==> 此标签下包含文章，无法删除，tagId: {}", id);
+            throw new BusinessException(" 此标签下包含文章，无法删除");
         }
         return tagMapper.deleteById(id);
     }
@@ -96,5 +112,25 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, TagDO> implements Tag
             tagSelectVO.setId(tag.getId());
             return tagSelectVO;
         }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<SelectRspVO> searchTags(SearchTagsReqVO searchTagsReqVO) {
+        String key = searchTagsReqVO.getKey();
+
+        // 执行模糊查询
+        List<TagDO> tagDOS = tagMapper.selectByKey(key);
+
+        // do 转 vo
+        List<SelectRspVO> vos = null;
+        if (!CollectionUtils.isEmpty(tagDOS)) {
+            vos = tagDOS.stream()
+                    .map(tagDO -> SelectRspVO.builder()
+                            .label(tagDO.getName())
+                            .value(tagDO.getId())
+                            .build())
+                    .collect(Collectors.toList());
+        }
+        return vos;
     }
 }

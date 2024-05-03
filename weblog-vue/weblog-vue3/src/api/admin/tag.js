@@ -16,3 +16,13 @@ export function deleteTag(id) {
         }
     })
 }
+
+// 根据标签名模糊查询
+export function searchTags(key) {
+    return log_service.post("/admin/tag/search", {key})
+}
+
+// 获取标签 select 列表数据
+export function getTagSelectList() {
+    return log_service.get("/admin/tag/getAll")
+}

@@ -7,6 +7,7 @@ import com.xiangjiahui.weblog.common.domain.dos.TagDO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 @Mapper
@@ -21,5 +22,20 @@ public interface TagMapper extends BaseMapper<TagDO> {
                 .le(Objects.nonNull(endDate),TagDO::getCreateTime,endDate)
                 .orderByDesc(TagDO::getCreateTime);
         return selectPage(page,wrapper);
+    }
+
+
+    /**
+     * 根据标签模糊查询
+     * @param key
+     * @return
+     */
+    default List<TagDO> selectByKey(String key) {
+        LambdaQueryWrapper<TagDO> wrapper = new LambdaQueryWrapper<>();
+
+        // 构造模糊查询的条件
+        wrapper.like(TagDO::getName, key).orderByDesc(TagDO::getCreateTime);
+
+        return selectList(wrapper);
     }
 }

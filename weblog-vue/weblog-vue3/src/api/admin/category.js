@@ -16,3 +16,8 @@ export function deleteCategory(id) {
             }
         })
 }
+
+// 获取分类 select 数据
+export function getCategorySelectList() {
+    return log_service.get("/admin/category/getAll")
+}

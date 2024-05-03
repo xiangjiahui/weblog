@@ -1,5 +1,6 @@
 package com.xiangjiahui.weblog.admin.controller;
 
+import com.xiangjiahui.weblog.admin.domains.vo.tag.SearchTagsReqVO;
 import com.xiangjiahui.weblog.admin.domains.vo.tag.TagReqVO;
 import com.xiangjiahui.weblog.admin.service.TagService;
 import com.xiangjiahui.weblog.common.annotation.ApiOperationLog;
@@ -58,5 +59,12 @@ public class TagController {
     @ApiOperationLog(description = "获取所有标签")
     public ResponseEntity<Response> getAllTag() {
         return ResponseEntity.ok().body(Response.success(tagService.getAllTag()));
+    }
+
+    @PostMapping("/tag/search")
+    @ApiOperation(value = "标签模糊查询")
+    @ApiOperationLog(description = "标签模糊查询")
+    public ResponseEntity<Response> searchTags(@RequestBody @Validated SearchTagsReqVO searchTagsReqVO) {
+        return ResponseEntity.ok().body(Response.success(tagService.searchTags(searchTagsReqVO)));
     }
 }

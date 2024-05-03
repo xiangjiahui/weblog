@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xiangjiahui.weblog.admin.domains.vo.category.CategoryReqVO;
 import com.xiangjiahui.weblog.admin.service.AdminCategoryService;
+import com.xiangjiahui.weblog.common.domain.dos.ArticleCategoryRelDO;
 import com.xiangjiahui.weblog.common.domain.dos.CategoryDO;
+import com.xiangjiahui.weblog.common.domain.mapper.ArticleCategoryRelMapper;
 import com.xiangjiahui.weblog.common.domain.mapper.CategoryMapper;
 import com.xiangjiahui.weblog.common.exception.BusinessException;
 import com.xiangjiahui.weblog.common.model.CategoryPageListReqVO;
@@ -30,8 +32,11 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
 
     private final CategoryMapper categoryMapper;
 
-    public AdminCategoryServiceImpl(CategoryMapper categoryMapper) {
+    private final ArticleCategoryRelMapper articleCategoryRelMapper;
+
+    public AdminCategoryServiceImpl(CategoryMapper categoryMapper, ArticleCategoryRelMapper articleCategoryRelMapper) {
         this.categoryMapper = categoryMapper;
+        this.articleCategoryRelMapper = articleCategoryRelMapper;
     }
 
     @Override
@@ -90,8 +95,16 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
     @Override
     @Transactional(isolation = Isolation.SERIALIZABLE, rollbackFor = BusinessException.class)
     public int deleteCategoryByID(Long id) {
-        if (Objects.isNull(id) || id == 0L){
-            throw new BusinessException("分类ID不能为空");
+//        if (Objects.isNull(id) || id == 0L){
+//            throw new BusinessException("分类ID不能为空");
+//        }
+
+        // 校验该分类下是否已经有文章，若有，则提示需要先删除分类下所有文章，才能删除
+        ArticleCategoryRelDO articleCategoryRelDO = articleCategoryRelMapper.selectOneByCategoryId(id);
+
+        if (Objects.nonNull(articleCategoryRelDO)) {
+            log.warn("==> 此分类下包含文章，无法删除，categoryId: {}", id);
+            throw new BusinessException("此分类下包含文章，无法删除");
         }
         return categoryMapper.deleteById(id);
     }
