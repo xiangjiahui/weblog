@@ -2,6 +2,7 @@ import axios from 'axios';
 import { getToken } from '@/composables/cookie';
 import {showMessage} from '@/composables/util';
 import {removeToken} from '@/composables/cookie';
+import {useUserStore} from "@/stores/user";
 
 const log_service = axios.create({
     baseURL: 'http://192.168.2.10:8088',
@@ -30,8 +31,9 @@ log_service.interceptors.response.use(function (response) {
     console.log(error)
 
     if (error.response.status === 401) {
-        // 删除 cookie 中的令牌
-        removeToken()
+        // 退出登录
+        let userStore = useUserStore()
+        userStore.logout()
         // 刷新页面
         location.reload()
     }

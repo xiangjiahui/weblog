@@ -29,8 +29,8 @@ public interface ArticleMapper extends BaseMapper<ArticleDO> {
 
         // 构建查询条件
         LambdaQueryWrapper<ArticleDO> wrapper = Wrappers.<ArticleDO>lambdaQuery()
-                .select(ArticleDO::getId, ArticleDO::getTitle, ArticleDO::getCover, ArticleDO::getCreateTime)
-                .like(StringUtils.isNotBlank(title), ArticleDO::getTitle, title.trim()) // like 模块查询
+                //.select(ArticleDO::getId, ArticleDO::getTitle, ArticleDO::getCover, ArticleDO::getCreateTime)
+                .like(StringUtils.isNotBlank(title), ArticleDO::getTitle, title) // like 模块查询
                 .ge(Objects.nonNull(startDate), ArticleDO::getCreateTime, startDate) // 大于等于 startDate
                 .le(Objects.nonNull(endDate), ArticleDO::getCreateTime, endDate)  // 小于等于 endDate
                 .orderByDesc(ArticleDO::getCreateTime); // 按创建时间倒叙
