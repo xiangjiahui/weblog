@@ -8,6 +8,11 @@ import TagList from '@/pages/admin/Tag-List'
 import BlogSetting from '@/pages/admin/Blog-Setting'
 import CategoryList from '@/pages/admin/Category-List'
 import MenuList from '@/pages/admin/Menu-List'
+import ArchiveList from '@/pages/frontend/Archive-List'
+import WebCategoryList from '@/pages/frontend/Category-List'
+import CategoryArticleList from '@/pages/frontend/Category-Article-List'
+import WebTagList from '@/pages/frontend/Tag-List'
+import TagArticleList from '@/pages/frontend/Tag-Article-List'
 
 const routers = [
     {
@@ -71,7 +76,42 @@ const routers = [
                 }
             }
         ]
-    }
+    },
+    {
+        path: '/archive/list', // 归档页
+        component: ArchiveList,
+        meta: { // meta 信息
+            title: 'Weblog 归档页'
+        }
+    },
+    {
+        path: '/category/list', // 分类页
+        component: WebCategoryList,
+        meta: { // meta 信息
+            title: 'Weblog 分类页'
+        }
+    },
+    {
+        path: '/category/article/list', // 分类文章页
+        component: CategoryArticleList,
+        meta: { // meta 信息
+            title: 'Weblog 分类文章页'
+        }
+    },
+    {
+        path: '/tag/list', // 标签列表页
+        component: WebTagList,
+        meta: { // meta 信息
+            title: 'Weblog 标签列表页'
+        }
+    },
+    {
+        path: '/tag/article/list', // 标签列表页
+        component: TagArticleList,
+        meta: { // meta 信息
+            title: 'Weblog 标签文章页'
+        }
+    },
 ]
 
 const router = createRouter({

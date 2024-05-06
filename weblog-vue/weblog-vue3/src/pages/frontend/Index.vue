@@ -12,7 +12,7 @@
             <div v-for="(article, index) in articles" :key="index" class="col-span-2 md:col-span-1">
               <div class="bg-white h-full border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700">
                 <!-- 文章封面 -->
-                <a href="#">
+                <a>
                   <img class="rounded-t-lg h-48 w-full"
                        :src="article.cover"/>
                 </a>

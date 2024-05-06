@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.net.ConnectException;
+import java.time.DateTimeException;
 import java.util.Optional;
 
 /**
@@ -77,6 +78,11 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Response> connectException(ConnectException e) {
         log.error("{} request error, errorMessage: {} ", HttpUtil.getURL(), e.getMessage());
         return ResponseEntity.badRequest().body(Response.fail("连接失败: " + e.getMessage()));
+    }
+
+    @ExceptionHandler(value = DateTimeException.class)
+    public ResponseEntity<Response> dateTimeException(DateTimeException e) {
+        return ResponseEntity.badRequest().body(Response.fail("日期格式化出错"));
     }
 
 

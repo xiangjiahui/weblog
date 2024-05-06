@@ -2,7 +2,8 @@ spring:
   datasource:
     #    type: com.mysql.cj.jdbc.MysqlDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.76.129:3306/weblog?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false&zeroDateTimeBehavior=convertToNull&allowPublicKeyRetrieval=true
+    #url: jdbc:mysql://192.168.76.129:3306/weblog?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false&zeroDateTimeBehavior=convertToNull&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://43.139.2.157:3306/weblog?serverTimezone=Asia/Shanghai&characterEncoding=utf8&useSSL=false&zeroDateTimeBehavior=convertToNull&allowPublicKeyRetrieval=true
     username: root
     password: XJH9901042832
     hikari: # HikariCP连接池配置,这是SpringBoot2.x默认使用的连接池,它是一个高性能的连接池实现 , 同时，它号称是速度最快的连接池
@@ -14,6 +15,12 @@ spring:
       max-lifetime: 1800000 # Hikari连接在连接池中的最大存活时间，超过这个时间会被强制关闭。
       connection-timeout: 30000  # Hikari连接池中获取连接的超时时间，默认为30秒。
       connection-test-query: select 1 # Hikari连接池中测试连接的查询语句，默认为“select 1”
+  redis:
+#    host: 192.168.76.129
+    host: 43.139.2.157
+    port: 6379
+    database: 0
+    timeout: 3000
 
 logging:
   config: classpath:logback-weblog.xml
@@ -23,7 +30,8 @@ server:
 
 #minio
 minio:
-  endpoint: http://192.168.76.129:9001
+#  endpoint: http://192.168.76.129:9001
+  endpoint: http://43.139.2.157:9001
   accessKey: minioadmin
   secretKey: minioadmin
   bucketName: weblog
