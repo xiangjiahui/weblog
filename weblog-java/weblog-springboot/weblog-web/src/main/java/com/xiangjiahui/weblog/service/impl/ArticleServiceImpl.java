@@ -3,16 +3,19 @@ package com.xiangjiahui.weblog.service.impl;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.collect.Lists;
+import com.xiangjiahui.weblog.admin.event.ReadArticleEvent;
 import com.xiangjiahui.weblog.common.domain.dos.*;
 import com.xiangjiahui.weblog.common.domain.mapper.*;
+import com.xiangjiahui.weblog.common.exception.BusinessException;
 import com.xiangjiahui.weblog.common.utils.PageResponse;
-import com.xiangjiahui.weblog.model.vo.article.FindIndexArticlePageListReqVO;
-import com.xiangjiahui.weblog.model.vo.article.FindIndexArticlePageListRspVO;
+import com.xiangjiahui.weblog.markdown.MarkdownHelper;
+import com.xiangjiahui.weblog.model.vo.article.*;
 import com.xiangjiahui.weblog.model.vo.category.FindCategoryListRspVO;
 import com.xiangjiahui.weblog.model.vo.tag.FindTagListRspVO;
 import com.xiangjiahui.weblog.service.ArticleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -31,13 +34,17 @@ public class ArticleServiceImpl implements ArticleService {
     private final ArticleCategoryRelMapper articleCategoryRelMapper;
     private final TagMapper tagMapper;
     private final ArticleTagRelMapper articleTagRelMapper;
+    private final ArticleContentMapper articleContentMapper;
+    private final ApplicationEventPublisher eventPublisher;
 
-    public ArticleServiceImpl(ArticleMapper articleMapper, CategoryMapper categoryMapper, ArticleCategoryRelMapper articleCategoryRelMapper, TagMapper tagMapper, ArticleTagRelMapper articleTagRelMapper) {
+    public ArticleServiceImpl(ArticleMapper articleMapper, CategoryMapper categoryMapper, ArticleCategoryRelMapper articleCategoryRelMapper, TagMapper tagMapper, ArticleTagRelMapper articleTagRelMapper, ArticleContentMapper articleContentMapper, ApplicationEventPublisher eventPublisher) {
         this.articleMapper = articleMapper;
         this.categoryMapper = categoryMapper;
         this.articleCategoryRelMapper = articleCategoryRelMapper;
         this.tagMapper = tagMapper;
         this.articleTagRelMapper = articleTagRelMapper;
+        this.articleContentMapper = articleContentMapper;
+        this.eventPublisher = eventPublisher;
     }
     @Override
     public PageResponse findArticlePageList(FindIndexArticlePageListReqVO findIndexArticlePageListReqVO) {
@@ -125,5 +132,70 @@ public class ArticleServiceImpl implements ArticleService {
             });
         }
         return PageResponse.success(articleDOPage, vos);
+    }
+
+    @Override
+    public FindArticleDetailRspVO findArticleDetail(FindArticleDetailReqVO findArticleDetailReqVO) {
+        Long articleId = findArticleDetailReqVO.getArticleId();
+
+        ArticleDO articleDO = articleMapper.selectById(articleId);
+
+        // 判断文章是否存在
+        if (Objects.isNull(articleDO)) {
+            log.warn("==> 该文章不存在, articleId: {}", articleId);
+            throw new BusinessException("该文章不存在");
+        }
+
+        // 查询正文
+        ArticleContentDO articleContentDO = articleContentMapper.selectByArticleId(articleId);
+
+        // DO 转 VO
+        FindArticleDetailRspVO vo = FindArticleDetailRspVO.builder()
+                .title(articleDO.getTitle())
+                .createTime(articleDO.getCreateTime())
+                .content(MarkdownHelper.markdownToHtml(articleContentDO.getContent()))
+                .readNum(articleDO.getReadNum())
+                .build();
+
+        // 查询所属分类
+        ArticleCategoryRelDO articleCategoryRelDO = articleCategoryRelMapper.selectByArticleId(articleId);
+        CategoryDO categoryDO = categoryMapper.selectById(articleCategoryRelDO.getCategoryId());
+        vo.setCategoryId(categoryDO.getId());
+        vo.setCategoryName(categoryDO.getName());
+
+        // 查询标签
+        List<ArticleTagRelDO> articleTagRelDOS = articleTagRelMapper.selectByArticleId(articleId);
+        List<Long> tagIds = articleTagRelDOS.stream().map(ArticleTagRelDO::getTagId).collect(Collectors.toList());
+        List<TagDO> tagDOS = tagMapper.selectByIds(tagIds);
+
+        // 标签 DO 转 VO
+        List<FindTagListRspVO> tagVOS = tagDOS.stream()
+                .map(tagDO -> FindTagListRspVO.builder().id(tagDO.getId()).name(tagDO.getName()).build())
+                .collect(Collectors.toList());
+        vo.setTags(tagVOS);
+
+        // 上一篇
+        ArticleDO preArticleDO = articleMapper.selectPreArticle(articleId);
+        if (Objects.nonNull(preArticleDO)) {
+            FindPreNextArticleRspVO preArticleVO = FindPreNextArticleRspVO.builder()
+                    .articleId(preArticleDO.getId())
+                    .articleTitle(preArticleDO.getTitle())
+                    .build();
+            vo.setPreArticle(preArticleVO);
+        }
+
+        // 下一篇
+        ArticleDO nextArticleDO = articleMapper.selectNextArticle(articleId);
+        if (Objects.nonNull(nextArticleDO)) {
+            FindPreNextArticleRspVO nextArticleVO = FindPreNextArticleRspVO.builder()
+                    .articleId(nextArticleDO.getId())
+                    .articleTitle(nextArticleDO.getTitle())
+                    .build();
+            vo.setNextArticle(nextArticleVO);
+        }
+
+        // 阅读量 + 1
+        eventPublisher.publishEvent(new ReadArticleEvent(this, articleId));
+        return vo;
     }
 }

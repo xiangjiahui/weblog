@@ -12,7 +12,7 @@
             <div v-for="(article, index) in articles" :key="index" class="col-span-2 md:col-span-1">
               <div class="bg-white h-full border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700">
                 <!-- 文章封面 -->
-                <a>
+                <a @click="goArticleDetailPage(article.id)" class="cursor-pointer">
                   <img class="rounded-t-lg h-48 w-full"
                        :src="article.cover"/>
                 </a>
@@ -25,7 +25,7 @@
                                     </span>
                   </div>
                   <!-- 文章标题 -->
-                  <a href="#">
+                  <a @click="goArticleDetailPage(article.id)" class="cursor-pointer">
                     <h2 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                       {{ article.title }}</h2>
                   </a>
@@ -133,10 +133,13 @@ import TagListCard from '@/layouts/frontend/components/TagListCard.vue'
 import {initTooltips} from 'flowbite'
 import {onMounted, ref} from 'vue'
 import {getArticlePageList} from '@/api/frontend/article'
+import { useRouter } from 'vue-router'
 
 onMounted(() => {
   initTooltips();
 })
+
+const router = useRouter();
 
 // 文章集合
 const articles = ref([])
@@ -167,4 +170,9 @@ function getArticles(currentNo) {
 }
 
 getArticles(current.value)
+
+// 跳转文章详情页
+const goArticleDetailPage = (articleId) => {
+  router.push('/article/' + articleId)
+}
 </script>

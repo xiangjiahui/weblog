@@ -1,6 +1,8 @@
 package com.xiangjiahui.weblog.service;
 
 import com.xiangjiahui.weblog.common.utils.PageResponse;
+import com.xiangjiahui.weblog.model.vo.article.FindArticleDetailReqVO;
+import com.xiangjiahui.weblog.model.vo.article.FindArticleDetailRspVO;
 import com.xiangjiahui.weblog.model.vo.article.FindIndexArticlePageListReqVO;
 
 public interface ArticleService {
@@ -11,4 +13,12 @@ public interface ArticleService {
      * @return
      */
     PageResponse findArticlePageList(FindIndexArticlePageListReqVO vo);
+
+
+    /**
+     * 获取文章详情
+     * @param findArticleDetailReqVO
+     * @return
+     */
+    FindArticleDetailRspVO findArticleDetail(FindArticleDetailReqVO findArticleDetailReqVO);
 }

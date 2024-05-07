@@ -3,6 +3,8 @@ import { getToken } from '@/composables/cookie';
 import {showMessage} from '@/composables/util';
 import {removeToken} from '@/composables/cookie';
 import {useUserStore} from "@/stores/user";
+import { useRouter } from "vue-router";
+const router = useRouter();
 
 const log_service = axios.create({
     baseURL: 'http://192.168.2.10:8088',
@@ -36,6 +38,9 @@ log_service.interceptors.response.use(function (response) {
         userStore.logout()
         // 刷新页面
         location.reload()
+    }else if (error.response.status === 404) {
+        // 手动跳转 404 页面
+        router.push({name : 'NotFound'})
     }
 
     let errorMsg =  error.response.data.message ? error.response.data.message : '请求错误'

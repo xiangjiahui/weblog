@@ -13,6 +13,8 @@ import WebCategoryList from '@/pages/frontend/Category-List'
 import CategoryArticleList from '@/pages/frontend/Category-Article-List'
 import WebTagList from '@/pages/frontend/Tag-List'
 import TagArticleList from '@/pages/frontend/Tag-Article-List'
+import ArticleDetail from '@/pages/frontend/ArticleDetail'
+import NotFound from '@/pages/frontend/404'
 
 const routers = [
     {
@@ -110,6 +112,21 @@ const routers = [
         component: TagArticleList,
         meta: { // meta 信息
             title: 'Weblog 标签文章页'
+        }
+    },
+    {
+        path: '/article/:articleId', // 文章详情页
+        component: ArticleDetail,
+        meta: { // meta 信息
+            title: 'Weblog 详情页'
+        }
+    },
+    {
+        path: '/:pathMatch(.*)*',
+        name: 'NotFound',
+        component: NotFound,
+        meta: {
+            title: '404 页'
         }
     },
 ]

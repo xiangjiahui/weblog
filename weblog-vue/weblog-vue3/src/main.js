@@ -8,6 +8,9 @@ import 'animate.css';
 import '@/permission'
 import 'nprogress/nprogress.css'
 import pinia from '@/stores'
+// 图片点击放大
+import 'viewerjs/dist/viewer.css'
+import VueViewer from 'v-viewer'
 
 
 const app = createApp(App);
@@ -19,4 +22,5 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 
 app.use(router)
 app.use(pinia)
+app.use(VueViewer)
 app.mount('#app')
