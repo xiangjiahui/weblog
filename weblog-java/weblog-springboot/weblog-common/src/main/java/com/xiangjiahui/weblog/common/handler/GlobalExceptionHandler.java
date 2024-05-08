@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.net.ConnectException;
+import java.sql.SQLSyntaxErrorException;
 import java.time.DateTimeException;
 import java.util.Optional;
 
@@ -84,6 +85,19 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Response> dateTimeException(DateTimeException e) {
         return ResponseEntity.badRequest().body(Response.fail("日期格式化出错"));
     }
+
+
+    @ExceptionHandler(value = SQLSyntaxErrorException.class)
+    public ResponseEntity<Response> sqlException(SQLSyntaxErrorException e) {
+        return ResponseEntity.internalServerError().body(Response.internalServerError("数据库SQL语句操作出错"));
+    }
+
+
+//    @ExceptionHandler(value = Exception.class)
+//    public ResponseEntity<Response> programException(Exception e) {
+//        log.error("{} request error, errorMessage: {} ", HttpUtil.getURL(), e.getMessage());
+//        return ResponseEntity.internalServerError().body(Response.internalServerError("未知的程序错误"));
+//    }
 
 
 //    @ExceptionHandler(value = BatchUpdateException.class)

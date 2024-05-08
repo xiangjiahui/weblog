@@ -296,13 +296,13 @@ function getTableData() {
   // 调用后台分页接口，并传入所需参数
   getArticlePageList({ currentPage: current.value, size: size.value, startDate: startDate.value, endDate: endDate.value, title: searchArticleTitle.value })
       .then((res) => {
-        if (res.success == true) {
+        if (res.success === true) {
           tableData.value = res.data
           current.value = res.current
           size.value = res.size
           total.value = res.total
         }
-      })
+      }).catch(error => {})
       .finally(() => tableLoading.value = false) // 隐藏表格 loading
 }
 getTableData()
@@ -319,7 +319,7 @@ const deleteArticleSubmit = (row) => {
   console.log(row)
   showModel('是否确定要删除该文章？').then(() => {
     deleteArticle(row.id).then((res) => {
-      if (res.success == false) {
+      if (res.success === false) {
         // 获取服务端返回的错误消息
         let message = res.message
         // 提示错误消息
@@ -383,7 +383,7 @@ const handleCoverChange = (file) => {
   formData.append('file', file.raw)
   uploadFile(formData).then((e) => {
     // 响参失败，提示错误消息
-    if (e.success == false) {
+    if (e.success === false) {
       let message = e.message
       showMessage(message, 'error')
       return
@@ -392,7 +392,7 @@ const handleCoverChange = (file) => {
     // 成功则设置表单对象中的封面链接，并提示上传成功
     form.cover = e.data.url
     showMessage('上传成功')
-  })
+  }).catch(error => {})
 }
 
 // 编辑文章：上传文章封面图片
@@ -403,7 +403,7 @@ const handleUpdateCoverChange = (file) => {
   formData.append('file', file.raw)
   uploadFile(formData).then((e) => {
     // 响参失败，提示错误消息
-    if (e.success == false) {
+    if (e.success === false) {
       let message = e.message
       showMessage(message, 'error')
       return
@@ -480,7 +480,7 @@ const publishArticleSubmit = () => {
     }
 
     publishArticle(form).then((res) => {
-      if (res.success == false) {
+      if (res.success === false) {
         // 获取服务端返回的错误消息
         let message = res.message
         // 提示错误消息
@@ -540,7 +540,7 @@ const updateSubmit = () => {
 
     // 请求更新文章接口
     updateArticle(updateArticleForm).then((res) => {
-      if (res.success == false) {
+      if (res.success === false) {
         // 获取服务端返回的错误消息
         let message = res.message
         // 提示错误消息

@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 import App from '@/App.vue'
+import Vue from 'vue'
 import router from '@/router';
 import '@/assets/main.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
@@ -12,10 +13,9 @@ import pinia from '@/stores'
 import 'viewerjs/dist/viewer.css'
 import VueViewer from 'v-viewer'
 
-
 const app = createApp(App);
 
-
+// 引入图标
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component)
 }

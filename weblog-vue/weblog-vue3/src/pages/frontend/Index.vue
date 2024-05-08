@@ -107,7 +107,6 @@
       <!-- 右边侧边栏，占用一列 -->
       <aside class="col-span-4 md:col-span-1">
         <!-- 博主信息 -->
-        <!-- 博主信息 -->
         <UserInfoCard></UserInfoCard>
 
         <!-- 分类 -->

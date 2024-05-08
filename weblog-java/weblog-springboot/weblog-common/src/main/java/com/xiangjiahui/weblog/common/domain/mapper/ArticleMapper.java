@@ -1,12 +1,15 @@
 package com.xiangjiahui.weblog.common.domain.mapper;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xiangjiahui.weblog.common.domain.dos.ArticleDO;
+import com.xiangjiahui.weblog.common.domain.dos.ArticlePublishCountDO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -96,4 +99,24 @@ public interface ArticleMapper extends BaseMapper<ArticleDO> {
                 .setSql("read_num = read_num + 1")
                 .eq(ArticleDO::getId, articleId));
     }
+
+
+    /**
+     * 查询所有记录的阅读量
+     * @return
+     */
+    default ArticleDO selectReadNumCount() {
+        // 设置仅查询 read_num 字段
+        QueryWrapper<ArticleDO> wrapper = new QueryWrapper<>();
+        wrapper.select("sum(read_num) read_num");
+        return selectOne(wrapper);
+        //return selectMaps(wrapper).get(0).get("read_num") == null ? 0L : Long.parseLong(String.valueOf(selectMaps(wrapper).get(0).get("read_num")));
+    }
+
+
+    @Select("select date(create_time) date,count(1) count from t_article " +
+            "where create_time >= #{startDate} and create_time < #{endDate} " +
+            "group by date(create_time)")
+    List<ArticlePublishCountDO> selectDateArticlePublishCount(LocalDate startDate, LocalDate endDate);
+
 }
