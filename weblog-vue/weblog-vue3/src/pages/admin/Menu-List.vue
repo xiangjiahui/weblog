@@ -22,13 +22,13 @@
 
     <el-card shadow="never">
       <!-- 新增按钮 -->
-      <div class="mb-5">
-        <el-button type="primary" @click="addCategoryBtnClick">
-          <el-icon class="mr-1">
-            <Plus />
-          </el-icon>
-          新增</el-button>
-      </div>
+<!--      <div class="mb-5">-->
+<!--        <el-button type="primary" @click="addMenuClick">-->
+<!--          <el-icon class="mr-1">-->
+<!--            <Plus />-->
+<!--          </el-icon>-->
+<!--          新增</el-button>-->
+<!--      </div>-->
 
       <!-- 菜单列表 -->
       <el-table :data="tableData" border stripe style="width: 100%" v-loading="tableLoading">
@@ -57,22 +57,22 @@
         </el-table-column>
 
         <el-table-column prop="createTime" label="创建时间" width="180" />
-        <el-table-column label="操作">
-          <template #default="scope">
-            <el-button type="primary" size="small" @click="updateMenuSubmit(scope.row)">
-              <el-icon class="mr-1">
-                <Edit />
-              </el-icon>
-              修改
-            </el-button>
-            <el-button type="danger" size="small" @click="deleteMenuSubmit(scope.row)">
-              <el-icon class="mr-1">
-                <Delete />
-              </el-icon>
-              删除
-            </el-button>
-          </template>
-        </el-table-column>
+<!--        <el-table-column label="操作">-->
+<!--          <template #default="scope">-->
+<!--            <el-button type="primary" size="small" >-->
+<!--              <el-icon class="mr-1">-->
+<!--                <Edit />-->
+<!--              </el-icon>-->
+<!--              修改-->
+<!--            </el-button>-->
+<!--            <el-button type="danger" size="small">-->
+<!--              <el-icon class="mr-1">-->
+<!--                <Delete />-->
+<!--              </el-icon>-->
+<!--              删除-->
+<!--            </el-button>-->
+<!--          </template>-->
+<!--        </el-table-column>-->
       </el-table>
 
 
@@ -107,17 +107,19 @@
 <script setup>
 import { Search, RefreshRight } from '@element-plus/icons-vue'
 import { ref,reactive } from 'vue'
-import moment from 'moment'
-import { getAllMenu } from '@/api/admin/menu'
+import {addMenu, getAllMenu} from '@/api/admin/menu'
 import FormDialog from '@/components/FormDialog'
+import {showMessage} from "@/composables/util";
+
 
 const formRef = ref(null)
+
 const form = reactive({
-  index: '',
+  // index: '',
   name: '',
   path: '',
-  icon: '',
-  createTime: ''
+  icon: ''
+  // createTime: ''
 })
 // 表格加载 Loading
 const tableLoading = ref(false)
@@ -181,21 +183,52 @@ const reset = () => {
 }
 
 
-// 新增分类按钮点击事件
-const addCategoryBtnClick = () => {
+// 新增菜单按钮点击事件
+const addMenuClick = () => {
   formDialogRef.value.open()
+}
+
+
+const onSubmit = () => {
+  formRef.value.validate((valid) => {
+    if (!valid) {
+      showMessage('表单验证不通过','error')
+      return false
+    }
+
+    formDialogRef.value.showBtnLoading()
+
+    addMenu(form).then((res) => {
+      if (res.success === true) {
+        showMessage('添加成功')
+        // 将表单中分类名称置空
+        form.name = ''
+        form.path = ''
+        form.icon = ''
+        // 隐藏对话框
+        // dialogVisible.value = false
+        formDialogRef.value.close()
+        // 重新请求分页接口，渲染数据
+        getTableData()
+      }
+    }).catch(error => {
+      // showMessage('添加失败','error')
+    }).finally(() => {
+      formDialogRef.value.closeBtnLoading()
+    })
+  })
 }
 
 // 获取分页数据
 function getTableData() {
   tableLoading.value = true
   // 调用后台分页接口，并传入所需参数
-  getAllMenu().then((res) => {
+  getAllMenu({currentPage: current.value, size: size.value, startDate: startDate.value, endDate: endDate.value, name: searchCategoryName.value}).then((res) => {
         if (res.success === true) {
           tableData.value = res.data
-          // current.value = res.currentPage
-          // size.value = res.size
-          // total.value = res.total
+          current.value = res.currentPage
+          size.value = res.size
+          total.value = res.total
         }
       }).catch(error => {}
   ).finally(() => {

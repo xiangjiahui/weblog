@@ -66,8 +66,8 @@ const userStore = useUserStore()
 
 // 定义相应式的表单对象
 const form = reactive({
-  username: '',
-  password: ''
+  username: 'test',
+  password: 'test'
 })
 
 const loading = ref(false)

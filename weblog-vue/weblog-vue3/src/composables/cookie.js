@@ -36,3 +36,24 @@ export function getTabList() {
 export function setTabList(tabList) {
     return cookie.set(TAB_LIST_KEY, tabList)
 }
+
+
+// ============================== 菜单页 ==============================
+const MENU_LIST_KEY = 'menuList'
+
+// 获取 MenuList
+export function getMenuList() {
+    return cookie.get(MENU_LIST_KEY)
+}
+
+// 存储 MenuList 到 Cookie 中
+const date = new Date();
+const year = date.getFullYear()
+const month = date.getMonth() + 1
+const day = date.getDate() + 5
+const expired = year + '-' + month + '-' + day
+export function setMenuList(menuList) {
+    return cookie.set(MENU_LIST_KEY, menuList,{
+        expires: new Date(expired)
+    })
+}

@@ -13,3 +13,11 @@ export function getUserInfo(){
 export function updateAdminPassword(data) {
     return log_service.post('/admin/password/update',data)
 }
+
+export function getPageUserList(data) {
+    return log_service.post('/admin/user/getPageUserList',data)
+}
+
+export function addUser(data) {
+    return log_service.post('/admin/user/addUser',data)
+}

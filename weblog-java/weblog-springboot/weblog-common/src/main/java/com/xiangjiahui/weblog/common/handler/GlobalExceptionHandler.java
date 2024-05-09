@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.net.ConnectException;
+import java.sql.SQLException;
 import java.sql.SQLSyntaxErrorException;
 import java.time.DateTimeException;
 import java.util.Optional;
@@ -89,6 +90,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = SQLSyntaxErrorException.class)
     public ResponseEntity<Response> sqlException(SQLSyntaxErrorException e) {
+        return ResponseEntity.internalServerError().body(Response.internalServerError("数据库SQL语句操作出错"));
+    }
+
+
+    @ExceptionHandler(value = SQLException.class)
+    public ResponseEntity<Response> sqlException(SQLException e) {
         return ResponseEntity.internalServerError().body(Response.internalServerError("数据库SQL语句操作出错"));
     }
 

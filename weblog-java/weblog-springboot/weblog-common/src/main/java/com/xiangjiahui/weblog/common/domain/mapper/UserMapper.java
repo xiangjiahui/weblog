@@ -3,10 +3,14 @@ package com.xiangjiahui.weblog.common.domain.mapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xiangjiahui.weblog.common.domain.dos.UserDO;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Mapper
 public interface UserMapper extends BaseMapper<UserDO> {
@@ -29,5 +33,14 @@ public interface UserMapper extends BaseMapper<UserDO> {
         updateWrapper.eq(UserDO::getUsername,username);
 
         return update(null,updateWrapper);
+    }
+
+
+    default Page<UserDO> selectPageList(String username, Long current, Long size, LocalDate startDate, LocalDate endDate) {
+        return selectPage(new Page<>(current,size),new LambdaQueryWrapper<UserDO>()
+                .like(StringUtils.isNotBlank(username),UserDO::getUsername,username)
+                .gt(Objects.nonNull(startDate),UserDO::getCreateTime,startDate)
+                .lt(Objects.nonNull(endDate),UserDO::getCreateTime,endDate)
+                .orderByDesc(UserDO::getUpdateTime));
     }
 }

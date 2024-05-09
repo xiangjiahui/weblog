@@ -19,6 +19,7 @@
           <span>{{ item.name }}</span>
         </el-menu-item>
       </template>
+
     </el-menu>
   </div>
 </template>
@@ -28,6 +29,7 @@ import {ref, computed, reactive} from 'vue'
 import { useRoute,useRouter } from 'vue-router'
 import { useMenuStore } from '@/stores/menu'
 import { getAllMenu } from '@/api/admin/menu'
+import { getMenuList,setMenuList } from "@/composables/cookie";
 // 引入 useMenuStore
 const menuStore = useMenuStore()
 
@@ -47,11 +49,15 @@ const handleSelect = (path) => {
 const isCollapse = computed(() =>  !(menuStore.menuWidth === '250px'))
 
 const getMenu = () => {
-  getAllMenu().then((res) => {
-    menus.value = res.data
-  })
+  if (!getMenuList()) {
+    getAllMenu().then((res) => {
+      //menus.value = res.data
+      setMenuList(res.data)
+    })
+  }
 }
 getMenu()
+menus.value = getMenuList()
 </script>
 
 <style scoped>

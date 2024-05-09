@@ -15,6 +15,7 @@ import WebTagList from '@/pages/frontend/Tag-List'
 import TagArticleList from '@/pages/frontend/Tag-Article-List'
 import ArticleDetail from '@/pages/frontend/ArticleDetail'
 import NotFound from '@/pages/frontend/404'
+import UserList from '@/pages/admin/UserList'
 
 const routers = [
     {
@@ -75,6 +76,13 @@ const routers = [
                 component: MenuList,
                 meta: {
                     title: '菜单设置'
+                }
+            },
+            {
+                path: '/admin/user/setting',
+                component: UserList,
+                meta: {
+                    title: '用户管理'
                 }
             }
         ]

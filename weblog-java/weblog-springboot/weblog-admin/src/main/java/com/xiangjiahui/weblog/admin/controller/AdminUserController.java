@@ -4,6 +4,8 @@ package com.xiangjiahui.weblog.admin.controller;
 import com.xiangjiahui.weblog.admin.domains.vo.user.UpdateAdminUserVO;
 import com.xiangjiahui.weblog.admin.service.AdminUserService;
 import com.xiangjiahui.weblog.common.annotation.ApiOperationLog;
+import com.xiangjiahui.weblog.common.model.UserPageReqVO;
+import com.xiangjiahui.weblog.common.utils.PageResponse;
 import com.xiangjiahui.weblog.common.utils.Response;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -40,5 +42,13 @@ public class AdminUserController {
     @ApiOperationLog(description = "查询用户信息")
     public ResponseEntity<Response> findUser() {
         return ResponseEntity.ok().body(Response.success(adminUserService.findUser()));
+    }
+
+
+    @PostMapping("/user/getPageUserList")
+    @ApiOperation(value = "分页查询用户列表")
+    @ApiOperationLog(description = "分页查询用户列表")
+    public ResponseEntity<PageResponse> getPageUserList(@RequestBody UserPageReqVO vo) {
+        return ResponseEntity.ok().body(adminUserService.getPageUserList(vo));
     }
 }
