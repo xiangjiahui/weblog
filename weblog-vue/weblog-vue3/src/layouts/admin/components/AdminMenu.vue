@@ -33,7 +33,6 @@ import { getMenuList,setMenuList } from "@/composables/cookie";
 // 引入 useMenuStore
 const menuStore = useMenuStore()
 
-const menus = ref([{}])
 
 const route = useRoute()
 const router = useRouter()
@@ -57,7 +56,53 @@ const getMenu = () => {
   }
 }
 getMenu()
+const menus = ref([{}])
 menus.value = getMenuList()
+
+// const menus = [
+//   {
+//     'id': 1,
+//     'name': '仪表盘',
+//     'icon': 'Monitor',
+//     'path': '/admin/index'
+//   },
+//   {
+//     'id': 2,
+//     'name': '文章管理',
+//     'icon': 'Document',
+//     'path': '/admin/article/list',
+//   },
+//   {
+//     'id': 3,
+//     'name': '分类管理',
+//     'icon': 'FolderOpened',
+//     'path': '/admin/category/list',
+//   },
+//   {
+//     'id': 4,
+//     'name': '标签管理',
+//     'icon': 'PriceTag',
+//     'path': '/admin/tag/list',
+//   },
+//   {
+//     'id': 5,
+//     'name': '博客设置',
+//     'icon': 'Setting',
+//     'path': '/admin/blog/setting',
+//   },
+//   {
+//     'id': 6,
+//     'name': '菜单设置',
+//     'icon': 'Menu',
+//     'path': '/admin/menu/setting',
+//   },
+//   {
+//     'id': 7,
+//     'name': '用户设置',
+//     'icon': 'User',
+//     'path': '/admin/user/setting',
+//   },
+// ]
 </script>
 
 <style scoped>

@@ -21,12 +21,12 @@ public class AdminMenuController {
     private MenuService menuService;
 
 
-    @PostMapping("/menu/getAllMenu")
+    @PostMapping("/menu/getPageList")
     @ApiOperation(value = "获取所有菜单")
     @ApiOperationLog(description = "获取所有菜单")
     @ApiRequestLimit
     public ResponseEntity<PageResponse> getAllMenu(@RequestBody MenuPageReqVO vo){
-        return ResponseEntity.ok(menuService.getAllMenu(vo));
+        return ResponseEntity.ok(menuService.getPageMenuList(vo));
     }
 
 
@@ -46,5 +46,14 @@ public class AdminMenuController {
     public ResponseEntity<Response> addMenu(@RequestBody MenuReqVO vo){
         menuService.addMenu(vo);
         return ResponseEntity.ok(Response.success("添加成功"));
+    }
+
+
+    @GetMapping("/menu/getAllMenu")
+    @ApiOperation(value = "获取所有菜单")
+    @ApiOperationLog(description = "获取所有菜单")
+    @ApiRequestLimit
+    public ResponseEntity<Response> getAllMenu(){
+        return ResponseEntity.ok(Response.success(menuService.getAllMenu()));
     }
 }

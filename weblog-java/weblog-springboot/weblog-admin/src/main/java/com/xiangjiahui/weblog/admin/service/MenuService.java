@@ -9,9 +9,11 @@ import java.util.List;
 
 public interface MenuService {
 
-    PageResponse getAllMenu(MenuPageReqVO vo);
+    PageResponse getPageMenuList(MenuPageReqVO vo);
 
     List<MenuDO> getTreeMenu();
 
     void addMenu(MenuReqVO vo);
+
+    List<MenuDO> getAllMenu();
 }

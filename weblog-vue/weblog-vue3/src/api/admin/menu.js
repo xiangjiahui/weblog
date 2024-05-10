@@ -1,8 +1,8 @@
 import log_service from '@/utils/request'
 
 
-export function getAllMenu(data){
-    return log_service.post('/admin/menu/getAllMenu',data)
+export function getPageMenuList(data){
+    return log_service.post('/admin/menu/getPageList',data)
 }
 
 // export function getTreeMenu(){
@@ -11,4 +11,8 @@ export function getAllMenu(data){
 
 export function addMenu(data){
     return log_service.post('/admin/menu/addMenu',data)
+}
+
+export function getAllMenu(){
+    return log_service.get('/admin/menu/getAllMenu')
 }

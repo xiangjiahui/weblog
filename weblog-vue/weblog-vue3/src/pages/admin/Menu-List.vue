@@ -107,7 +107,7 @@
 <script setup>
 import { Search, RefreshRight } from '@element-plus/icons-vue'
 import { ref,reactive } from 'vue'
-import {addMenu, getAllMenu} from '@/api/admin/menu'
+import {addMenu, getAllMenu, getPageMenuList} from '@/api/admin/menu'
 import FormDialog from '@/components/FormDialog'
 import {showMessage} from "@/composables/util";
 
@@ -223,7 +223,7 @@ const onSubmit = () => {
 function getTableData() {
   tableLoading.value = true
   // 调用后台分页接口，并传入所需参数
-  getAllMenu({currentPage: current.value, size: size.value, startDate: startDate.value, endDate: endDate.value, name: searchCategoryName.value}).then((res) => {
+  getPageMenuList({currentPage: current.value, size: size.value, startDate: startDate.value, endDate: endDate.value, name: searchCategoryName.value}).then((res) => {
         if (res.success === true) {
           tableData.value = res.data
           current.value = res.currentPage

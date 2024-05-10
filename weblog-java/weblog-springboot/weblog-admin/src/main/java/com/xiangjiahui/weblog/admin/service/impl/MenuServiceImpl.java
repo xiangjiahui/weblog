@@ -26,7 +26,7 @@ public class MenuServiceImpl implements MenuService {
 
 
     @Override
-    public PageResponse getAllMenu(MenuPageReqVO vo) {
+    public PageResponse getPageMenuList(MenuPageReqVO vo) {
         String name = vo.getName();
         Long currentPage = vo.getCurrentPage();
         Long size = vo.getSize();
@@ -61,11 +61,16 @@ public class MenuServiceImpl implements MenuService {
 
     }
 
-
     @Override
     public void addMenu(MenuReqVO vo) {
         MenuDO menuDO = new MenuDO();
         MenuReqVO.vo2do(menuDO,vo);
         mapper.insert(menuDO);
+    }
+
+
+    @Override
+    public List<MenuDO> getAllMenu() {
+        return mapper.selectList(null);
     }
 }
