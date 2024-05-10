@@ -50,7 +50,9 @@ public class AdminArticleServiceImpl implements AdminArticleService {
     public boolean publishArticle(PublishArticleReqVO vo) {
         // VO转DO，并保存
         ArticleDO articleDO = new ArticleDO();
-        BeanUtils.copyProperties(vo,articleDO);
+        if (Objects.nonNull(vo)) {
+            BeanUtils.copyProperties(vo, articleDO);
+        }
 
         articleMapper.insert(articleDO);
 
@@ -126,7 +128,9 @@ public class AdminArticleServiceImpl implements AdminArticleService {
 
         List<Object> collect = articleDOPage.getRecords().stream().map(articleDO -> {
             FindArticlePageListRspVO rspVO = new FindArticlePageListRspVO();
-            BeanUtils.copyProperties(articleDO, rspVO);
+            if (Objects.nonNull(articleDO)) {
+                BeanUtils.copyProperties(articleDO, rspVO);
+            }
             return rspVO;
         }).collect(Collectors.toList());
         return PageResponse.success(articleDOPage,collect);
@@ -155,7 +159,7 @@ public class AdminArticleServiceImpl implements AdminArticleService {
         List<Long> tagIds = articleTagRelDOS.stream().map(ArticleTagRelDO::getTagId).collect(Collectors.toList());
 
         FindArticleDetailRspVO detailRspVO = new FindArticleDetailRspVO();
-        BeanUtils.copyProperties(articleDO,detailRspVO);
+        BeanUtils.copyProperties(articleDO, detailRspVO);
         detailRspVO.setContent(articleContentDO.getContent());
         detailRspVO.setCategoryId(articleCategoryRelDO.getCategoryId());
         detailRspVO.setTagIds(tagIds);

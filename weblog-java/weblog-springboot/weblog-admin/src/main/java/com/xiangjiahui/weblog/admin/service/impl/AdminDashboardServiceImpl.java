@@ -6,6 +6,7 @@ import com.google.common.collect.Maps;
 import com.xiangjiahui.weblog.admin.domains.vo.dashboard.FindDashboardPVStatisticsInfoRspVO;
 import com.xiangjiahui.weblog.admin.domains.vo.dashboard.FindDashboardStatisticsInfoRspVO;
 import com.xiangjiahui.weblog.admin.service.AdminDashboardService;
+import com.xiangjiahui.weblog.common.domain.dos.ArticleDO;
 import com.xiangjiahui.weblog.common.domain.dos.ArticlePublishCountDO;
 import com.xiangjiahui.weblog.common.domain.dos.StatisticsArticlePVDO;
 import com.xiangjiahui.weblog.common.domain.mapper.ArticleMapper;
@@ -55,7 +56,11 @@ public class AdminDashboardServiceImpl implements AdminDashboardService {
 
         // 总浏览量
         //List<ArticleDO> articleDOS = articleMapper.selectAllReadNum();
-        Long pvTotalCount = articleMapper.selectReadNumCount().getReadNum();
+        Long pvTotalCount = 0L;
+        ArticleDO articleDO = articleMapper.selectReadNumCount();
+        if (Objects.nonNull(articleDO)) {
+            pvTotalCount = articleDO.getReadNum();
+        }
 
 //        if (!CollectionUtils.isEmpty(articleDOS)) {
 //            // 所有 read_num 相加

@@ -24,7 +24,7 @@ jwt:
   tokenPrefix: Bearer
 
 api:
-  limit: false # 是否开启接口限流
+  limit: true # 是否开启接口限流
 
 #minio
 minio:

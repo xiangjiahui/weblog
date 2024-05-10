@@ -151,7 +151,7 @@ getArticlePVStatisticsInfo().then((res) => {
   if (res.success) {
     articlePVInfo.value = res.data
   }
-})
+}).catch(error => {})
 </script>
 
 <style scoped>

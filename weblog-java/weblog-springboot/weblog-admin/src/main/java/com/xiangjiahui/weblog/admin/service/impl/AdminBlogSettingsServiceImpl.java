@@ -9,6 +9,8 @@ import com.xiangjiahui.weblog.common.model.vo.blogsettings.UpdateBlogSettingsReq
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service("blogSetting")
 public class AdminBlogSettingsServiceImpl extends ServiceImpl<BlogSettingsMapper, BlogSettingsDO> implements AdminBlogSettingsService {
 
@@ -21,7 +23,9 @@ public class AdminBlogSettingsServiceImpl extends ServiceImpl<BlogSettingsMapper
     @Override
     public boolean updateBlogSettings(UpdateBlogSettingsReqVO vo) {
         BlogSettingsDO blogSettingsDO = new BlogSettingsDO();
-        BeanUtils.copyProperties(vo,blogSettingsDO);
+        if (Objects.nonNull(vo)) {
+            BeanUtils.copyProperties(vo, blogSettingsDO);
+        }
         blogSettingsDO.setId(1L);
 
         return saveOrUpdate(blogSettingsDO);
@@ -32,7 +36,9 @@ public class AdminBlogSettingsServiceImpl extends ServiceImpl<BlogSettingsMapper
     public FindBlogSettingsRspVO getDetail() {
         BlogSettingsDO settingsDO = blogSettingsMapper.selectById(1L);
         FindBlogSettingsRspVO vo = new FindBlogSettingsRspVO();
-        BeanUtils.copyProperties(settingsDO,vo);
+        if (Objects.nonNull(settingsDO)) {
+            BeanUtils.copyProperties(settingsDO, vo);
+        }
         return vo;
     }
 }

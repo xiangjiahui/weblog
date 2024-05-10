@@ -63,8 +63,10 @@ public class ArticleServiceImpl implements ArticleService {
             vos = articleDOS.stream()
                     .map(articleDO -> {
                         FindIndexArticlePageListRspVO vo = new FindIndexArticlePageListRspVO();
-                        BeanUtils.copyProperties(articleDO, vo);
-                        vo.setCreateTime(articleDO.getCreateTime().toLocalDate());
+                        if (Objects.nonNull(articleDO)) {
+                            BeanUtils.copyProperties(articleDO, vo);
+                            vo.setCreateTime(articleDO.getCreateTime().toLocalDate());
+                        }
                         return vo;
                     })
                     .collect(Collectors.toList());

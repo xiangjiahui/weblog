@@ -91,7 +91,9 @@ public class CategoryServiceImpl implements CategoryService {
             vos = articleDOS.stream()
                     .map(articleDO -> {
                         FindCategoryArticlePageListRspVO vo = new FindCategoryArticlePageListRspVO();
-                        BeanUtils.copyProperties(articleDO,vo);
+                        if (Objects.nonNull(articleDO)) {
+                            BeanUtils.copyProperties(articleDO, vo);
+                        }
                         return vo;
                     }).collect(Collectors.toList());
         }

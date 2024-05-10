@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service("webBlogSettingsService")
 @Slf4j
 public class BlogSettingsServiceImpl implements BlogSettingsService {
@@ -24,7 +26,9 @@ public class BlogSettingsServiceImpl implements BlogSettingsService {
         BlogSettingsDO blogSettingsDO = blogSettingsMapper.selectById(1L);
         // DO 转 VO
         FindBlogSettingsDetailRspVO vo = new FindBlogSettingsDetailRspVO();
-        BeanUtils.copyProperties(blogSettingsDO, vo);
+        if (Objects.nonNull(blogSettingsDO)) {
+            BeanUtils.copyProperties(blogSettingsDO, vo);
+        }
 
         return vo;
     }
