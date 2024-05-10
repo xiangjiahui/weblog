@@ -1,6 +1,7 @@
 package com.xiangjiahui.weblog.controller;
 
 import com.xiangjiahui.weblog.common.annotation.ApiOperationLog;
+import com.xiangjiahui.weblog.common.annotation.ApiRequestLimit;
 import com.xiangjiahui.weblog.common.utils.PageResponse;
 import com.xiangjiahui.weblog.common.utils.Response;
 import com.xiangjiahui.weblog.model.vo.article.FindArticleDetailReqVO;
@@ -27,6 +28,7 @@ public class ArticleController {
     @PostMapping("/article/list")
     @ApiOperation(value = "获取首页文章分页数据")
     @ApiOperationLog(description = "获取首页文章分页数据")
+    @ApiRequestLimit
     public ResponseEntity<PageResponse> findArticlePageList(@RequestBody FindIndexArticlePageListReqVO vo) {
         return ResponseEntity.ok().body(articleService.findArticlePageList(vo));
     }
@@ -36,6 +38,7 @@ public class ArticleController {
     @PostMapping("/article/detail")
     @ApiOperation(value = "获取文章详情")
     @ApiOperationLog(description = "获取文章详情")
+    @ApiRequestLimit
     public ResponseEntity<Response> findArticleDetail(@RequestBody FindArticleDetailReqVO vo) {
         return ResponseEntity.ok(Response.success(articleService.findArticleDetail(vo)));
     }

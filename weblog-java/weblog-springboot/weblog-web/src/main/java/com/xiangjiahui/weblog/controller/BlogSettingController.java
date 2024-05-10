@@ -2,6 +2,7 @@ package com.xiangjiahui.weblog.controller;
 
 
 import com.xiangjiahui.weblog.common.annotation.ApiOperationLog;
+import com.xiangjiahui.weblog.common.annotation.ApiRequestLimit;
 import com.xiangjiahui.weblog.common.utils.Response;
 import com.xiangjiahui.weblog.service.BlogSettingsService;
 import io.swagger.annotations.Api;
@@ -25,6 +26,7 @@ public class BlogSettingController {
     @PostMapping("/detail")
     @ApiOperation(value = "前台获取博客详情")
     @ApiOperationLog(description = "前台获取博客详情")
+    @ApiRequestLimit
     public ResponseEntity<Response> findDetail() {
         return ResponseEntity.ok(Response.success(blogSettingsService.findDetail()));
     }

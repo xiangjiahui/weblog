@@ -28,6 +28,8 @@ public class AdminCategoryController {
     @PostMapping("/category/add")
     @ApiOperation(value = "添加文章分类")
     @ApiOperationLog(description = "添加文章分类")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_ROOT')")
+    @ApiRequestLimit
     public ResponseEntity<Response> addCategory(@RequestBody @Validated CategoryReqVO categoryReqVO) {
         int insert = categoryService.addCategory(categoryReqVO);
         return insert == 0 ? ResponseEntity.badRequest().body(Response.fail("添加失败"))
@@ -47,7 +49,7 @@ public class AdminCategoryController {
     @PostMapping("/category/delete")
     @ApiOperation(value = "根据ID删除分类")
     @ApiOperationLog(description = "根据ID删除分类")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ROOT')")
     public ResponseEntity<Response> deleteCategory(@RequestParam(name = "id") Long id) {
         int delete = categoryService.deleteCategoryByID(id);
         return delete == 0 ? ResponseEntity.badRequest().body(Response.fail("删除失败或者不存在当前分类ID")) :
