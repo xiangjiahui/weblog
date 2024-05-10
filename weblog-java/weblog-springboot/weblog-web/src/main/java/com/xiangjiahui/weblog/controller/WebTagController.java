@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 
 @RestController
-@RequestMapping("/tag")
+@RequestMapping("/web/tag")
 @Api(tags = "标签")
 public class WebTagController {
 

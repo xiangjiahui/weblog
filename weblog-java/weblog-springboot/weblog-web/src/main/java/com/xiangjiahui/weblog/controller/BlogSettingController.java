@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 
 @RestController
-@RequestMapping("/blog/setting")
+@RequestMapping("/web/blog/setting")
 @Api(tags = "博客设置")
 public class BlogSettingController {
 

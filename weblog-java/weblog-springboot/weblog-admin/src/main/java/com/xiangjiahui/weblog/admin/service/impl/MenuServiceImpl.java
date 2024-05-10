@@ -1,7 +1,7 @@
 package com.xiangjiahui.weblog.admin.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.google.common.collect.Lists;
 import com.xiangjiahui.weblog.admin.service.MenuService;
 import com.xiangjiahui.weblog.common.domain.dos.MenuDO;
 import com.xiangjiahui.weblog.common.domain.mapper.MenuMapper;
@@ -44,8 +44,20 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public List<MenuDO> getTreeMenu() {
         List<MenuDO> menuDOS = mapper.selectList(null);
-        return menuDOS.stream().filter(menu -> menu.getParentId() == 0L)
-                .peek(menu -> menu.setChildren(getChildren(menu))).collect(Collectors.toList());
+        List<MenuDO> childrenList = menuDOS.stream().filter(menuDO -> menuDO.getParentId() > 0).collect(Collectors.toList());
+        List<MenuDO> parents = menuDOS.stream().filter(menuDO -> menuDO.getParentId() == 0).collect(Collectors.toList());
+
+        parents.forEach(parent -> {
+            List<MenuDO> treeMenu = Lists.newArrayList();
+            childrenList.forEach(children -> {
+                if (parent.getId().equals(children.getParentId())) {
+                    treeMenu.add(children);
+                    parent.setChildren(treeMenu);
+                }
+            });
+        });
+        return parents;
+
 
     }
 
@@ -55,9 +67,5 @@ public class MenuServiceImpl implements MenuService {
         MenuDO menuDO = new MenuDO();
         MenuReqVO.vo2do(menuDO,vo);
         mapper.insert(menuDO);
-    }
-
-    public List<MenuDO> getChildren(MenuDO menuDO){
-        return mapper.selectList(new LambdaQueryWrapper<MenuDO>().eq(MenuDO::getParentId,menuDO.getId()));
     }
 }

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.net.ConnectException;
 import java.sql.SQLException;
-import java.sql.SQLSyntaxErrorException;
 import java.time.DateTimeException;
 import java.util.Optional;
 
@@ -88,23 +87,32 @@ public class GlobalExceptionHandler {
     }
 
 
-    @ExceptionHandler(value = SQLSyntaxErrorException.class)
-    public ResponseEntity<Response> sqlException(SQLSyntaxErrorException e) {
-        return ResponseEntity.internalServerError().body(Response.internalServerError("数据库SQL语句操作出错"));
-    }
+//    @ExceptionHandler(value = SQLSyntaxErrorException.class)
+//    public ResponseEntity<Response> sqlException(SQLSyntaxErrorException e) {
+//        return ResponseEntity.internalServerError().body(Response.internalServerError("数据库SQL语句操作出错"));
+//    }
 
 
     @ExceptionHandler(value = SQLException.class)
     public ResponseEntity<Response> sqlException(SQLException e) {
-        return ResponseEntity.internalServerError().body(Response.internalServerError("数据库SQL语句操作出错"));
+        String errorMsg = "数据库SQL错误";
+        String message = e.getMessage();
+        log.error(message);
+        if (message.contains("Duplicate entry")) {
+            int startIndex = message.indexOf("'") + 1;
+            int endIndex = message.indexOf("for") - 2;
+            String key = message.substring(startIndex,endIndex);
+            errorMsg = "数据库索引数据重复,已存在相同的数据: " + key;
+        }
+        return ResponseEntity.internalServerError().body(Response.internalServerError(errorMsg));
     }
 
 
-//    @ExceptionHandler(value = Exception.class)
-//    public ResponseEntity<Response> programException(Exception e) {
-//        log.error("{} request error, errorMessage: {} ", HttpUtil.getURL(), e.getMessage());
-//        return ResponseEntity.internalServerError().body(Response.internalServerError("未知的程序错误"));
-//    }
+    @ExceptionHandler(value = NullPointerException.class)
+    public ResponseEntity<Response> programException(NullPointerException e) {
+        log.error("{} request error, errorMessage: {} ", HttpUtil.getURL(), e.getMessage());
+        return ResponseEntity.internalServerError().body(Response.internalServerError("未知的程序错误"));
+    }
 
 
 //    @ExceptionHandler(value = BatchUpdateException.class)

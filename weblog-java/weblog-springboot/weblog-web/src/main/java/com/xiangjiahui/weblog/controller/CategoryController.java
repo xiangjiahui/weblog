@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 
 @RestController
-@RequestMapping("/category")
+@RequestMapping("/web/category")
 @Api(tags = "分类")
 public class CategoryController {
 

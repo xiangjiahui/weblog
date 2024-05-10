@@ -75,18 +75,16 @@
       <FormDialog ref="formDialogRef" title="添加用户" destroyOnClose @submit="onSubmit">
         <el-form ref="formRef" :rules="rules" :model="form">
           <el-form-item label="用户名称" prop="username" label-width="80px" size="large">
-            <el-input v-model="form.username" placeholder="请输入用户名称" maxlength="6" show-word-limit clearable/>
+            <el-input v-model="form.username" placeholder="请输入用户名称" maxlength="20" show-word-limit clearable/>
           </el-form-item>
           <el-form-item label="用户密码" prop="password" label-width="80px" size="large">
-            <el-input v-model="form.password" placeholder="请输入用户密码" maxlength="15" show-word-limit clearable/>
+            <el-input v-model="form.password" placeholder="请输入用户密码" maxlength="20" show-word-limit clearable/>
           </el-form-item>
-          <!--          <el-form-item label="用户角色" prop="icon" label-width="80px" size="large">-->
-          <!--            <el-input v-model="form.role" placeholder="请输入用户角色" maxlength="8" show-word-limit clearable/>-->
-          <!--          </el-form-item>-->
           <el-form-item label="用户角色" prop="role">
             <el-select v-model="form.role" clearable placeholder="---请选择---" size="large">
-              <el-option label="ADMIN" value="ROLE_ADMIN"/>
-              <el-option label="GUEST" value="ROLE_GUEST"/>
+              <el-option label="超级管理员" value="ROLE_ROOT"/>
+              <el-option label="管理员" value="ROLE_ADMIN"/>
+              <el-option label="游客" value="ROLE_GUEST"/>
             </el-select>
           </el-form-item>
         </el-form>
@@ -95,17 +93,18 @@
 
       <!-- 修改用户 -->
       <FormDialog ref="formDialogRefUpdate" title="修改用户" destroyOnClose @submit="onUpdateUserInfo">
-        <el-form ref="formRef" :rules="rules" :model="form">
+        <el-form ref="updateFormRef" :rules="rules" :model="newForm">
           <el-form-item label="用户名称" prop="username" label-width="80px" size="large">
-            <el-input v-model="newForm.username" placeholder="请输入用户名称" maxlength="6" show-word-limit clearable disabled/>
+            <el-input v-model="newForm.username" placeholder="请输入用户名称" maxlength="20" show-word-limit clearable disabled/>
           </el-form-item>
           <el-form-item label="用户密码" prop="password" label-width="80px" size="large">
-            <el-input v-model="newForm.password" placeholder="请输入用户密码" maxlength="15" show-word-limit clearable/>
+            <el-input v-model="newForm.password" placeholder="请输入用户密码" maxlength="20" show-word-limit clearable/>
           </el-form-item>
           <el-form-item label="用户角色" prop="role">
             <el-select v-model="newForm.role" clearable placeholder="---请选择---" size="large">
-              <el-option label="ADMIN" value="ROLE_ADMIN"/>
-              <el-option label="GUEST" value="ROLE_GUEST"/>
+              <el-option label="超级管理员" value="ROLE_ROOT"/>
+              <el-option label="管理员" value="ROLE_ADMIN"/>
+              <el-option label="游客" value="ROLE_GUEST"/>
             </el-select>
           </el-form-item>
         </el-form>
@@ -128,10 +127,16 @@
 import {Search, RefreshRight} from '@element-plus/icons-vue'
 import {ref, reactive} from 'vue'
 import FormDialog from '@/components/FormDialog'
-import {showMessage} from "@/composables/util";
-import {addUser, getPageUserList} from "@/api/admin/user";
+import {showMessage} from "@/composables/util"
+import {addUser, getPageUserList,updateUser} from "@/api/admin/user"
+import { useUserStore } from '@/stores/user'
+import { useRouter } from 'vue-router'
+
+const userStore = useUserStore()
+const router = useRouter()
 
 const formRef = ref(null)
+const updateFormRef = ref(null)
 
 const form = reactive({
   username: '',
@@ -160,7 +165,7 @@ const rules = {
       message: '用户名称不能为空',
       trigger: 'blur',
     },
-    {min: 1, max: 10, message: '用户字数要求大于 1 个字符，小于 10 个字符', trigger: 'blur'},
+    {min: 1, max: 20, message: '用户字数要求大于 1 个字符，小于 20 个字符', trigger: 'blur'},
   ],
   password: [
     {
@@ -168,7 +173,7 @@ const rules = {
       message: '用户密码不能为空',
       trigger: 'blur',
     },
-    {min: 1, max: 15, message: '密码字数要求大于 1 个字符，小于 15 个字符', trigger: 'blur'}
+    {min: 1, max: 20, message: '密码字数要求大于 1 个字符，小于 20 个字符', trigger: 'blur'}
   ],
   role: [
     {
@@ -215,7 +220,7 @@ const addUserClick = () => {
 const updateUserInfo = (username,role) => {
   formDialogRefUpdate.value.open()
   newForm.username = username
-  newForm.role = role
+  newForm.role = 'ROLE_' + role
 
 }
 
@@ -232,7 +237,7 @@ const onSubmit = () => {
       if (res.success === true) {
         showMessage('添加成功')
         // 将表单中分类名称置空
-        form.name = ''
+        form.username = ''
         form.password = ''
         form.role = ''
         // 隐藏对话框
@@ -240,6 +245,39 @@ const onSubmit = () => {
         formDialogRef.value.close()
         // 重新请求分页接口，渲染数据
         getTableData()
+      }
+    }).catch(error => {
+      // showMessage('添加失败','error')
+    }).finally(() => {
+      formDialogRef.value.closeBtnLoading()
+    })
+  })
+}
+
+const onUpdateUserInfo = () => {
+  updateFormRef.value.validate((valid) => {
+    if (!valid) {
+      showMessage('表单验证不通过', 'error')
+      return false
+    }
+
+    formDialogRef.value.showBtnLoading()
+
+    updateUser(newForm).then((res) => {
+      if (res.success === true) {
+        showMessage('用户信息修改成功')
+        // 将表单中分类名称置空
+        newForm.username = ''
+        newForm.password = ''
+        newForm.role = ''
+        // 隐藏对话框
+        formDialogRef.value.close()
+
+        // 退出登录
+        userStore.logout()
+
+        // 跳转登录页
+        router.replace('/login')
       }
     }).catch(error => {
       // showMessage('添加失败','error')

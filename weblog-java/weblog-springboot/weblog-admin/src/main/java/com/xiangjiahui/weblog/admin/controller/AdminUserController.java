@@ -4,6 +4,7 @@ package com.xiangjiahui.weblog.admin.controller;
 import com.xiangjiahui.weblog.admin.domains.vo.user.UpdateAdminUserVO;
 import com.xiangjiahui.weblog.admin.service.AdminUserService;
 import com.xiangjiahui.weblog.common.annotation.ApiOperationLog;
+import com.xiangjiahui.weblog.common.model.UpdateSaveUserVO;
 import com.xiangjiahui.weblog.common.model.UserPageReqVO;
 import com.xiangjiahui.weblog.common.utils.PageResponse;
 import com.xiangjiahui.weblog.common.utils.Response;
@@ -50,5 +51,24 @@ public class AdminUserController {
     @ApiOperationLog(description = "分页查询用户列表")
     public ResponseEntity<PageResponse> getPageUserList(@RequestBody UserPageReqVO vo) {
         return ResponseEntity.ok().body(adminUserService.getPageUserList(vo));
+    }
+
+
+    @PostMapping("/user/addUser")
+    @ApiOperation(value = "添加用户")
+    @ApiOperationLog(description = "添加用户")
+    public ResponseEntity<Response> addUser(@RequestBody @Validated UpdateSaveUserVO vo) {
+        adminUserService.addUser(vo);
+        return ResponseEntity.ok().body(Response.success("添加成功"));
+    }
+
+
+    @PostMapping("/user/updateUser")
+    @ApiOperation(value = "修改用户")
+    @ApiOperationLog(description = "修改用户")
+    public ResponseEntity<Response> updateUser(@RequestBody @Validated UpdateSaveUserVO vo) {
+        boolean result = adminUserService.updateUser(vo);
+        return result ? ResponseEntity.ok().body(Response.success("修改成功")) :
+                ResponseEntity.badRequest().body(Response.fail("修改失败"));
     }
 }

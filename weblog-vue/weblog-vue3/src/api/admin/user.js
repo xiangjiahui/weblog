@@ -21,3 +21,7 @@ export function getPageUserList(data) {
 export function addUser(data) {
     return log_service.post('/admin/user/addUser',data)
 }
+
+export function updateUser(data) {
+    return log_service.post('/admin/user/updateUser',data)
+}
