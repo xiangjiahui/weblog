@@ -22,14 +22,14 @@ const routers = [
         path: '/',
         component: Index,
         meta: {
-            title: 'Weblog 首页'
+            title: '首页'
         }
     },
     {
         path: '/login',
         component: Login,
         meta: {
-            title: 'Weblog 登录页'
+            title: '登录页'
         }
     },
     {
@@ -91,42 +91,42 @@ const routers = [
         path: '/archive/list', // 归档页
         component: ArchiveList,
         meta: { // meta 信息
-            title: 'Weblog 归档页'
+            title: '归档'
         }
     },
     {
         path: '/category/list', // 分类页
         component: WebCategoryList,
         meta: { // meta 信息
-            title: 'Weblog 分类页'
+            title: '分类'
         }
     },
     {
         path: '/category/article/list', // 分类文章页
         component: CategoryArticleList,
         meta: { // meta 信息
-            title: 'Weblog 分类文章页'
+            title: '分类文章'
         }
     },
     {
         path: '/tag/list', // 标签列表页
         component: WebTagList,
         meta: { // meta 信息
-            title: 'Weblog 标签列表页'
+            title: '标签列表'
         }
     },
     {
         path: '/tag/article/list', // 标签列表页
         component: TagArticleList,
         meta: { // meta 信息
-            title: 'Weblog 标签文章页'
+            title: '标签文章'
         }
     },
     {
         path: '/article/:articleId', // 文章详情页
         component: ArticleDetail,
         meta: { // meta 信息
-            title: 'Weblog 详情页'
+            title: '详情'
         }
     },
     {
@@ -134,7 +134,7 @@ const routers = [
         name: 'NotFound',
         component: NotFound,
         meta: {
-            title: '404 页'
+            title: '404'
         }
     },
 ]

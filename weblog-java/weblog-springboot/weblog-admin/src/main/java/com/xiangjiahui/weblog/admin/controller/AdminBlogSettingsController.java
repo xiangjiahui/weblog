@@ -3,7 +3,6 @@ package com.xiangjiahui.weblog.admin.controller;
 
 import com.xiangjiahui.weblog.admin.service.AdminBlogSettingsService;
 import com.xiangjiahui.weblog.common.annotation.ApiOperationLog;
-import com.xiangjiahui.weblog.common.annotation.ApiRequestLimit;
 import com.xiangjiahui.weblog.common.model.vo.blogsettings.UpdateBlogSettingsReqVO;
 import com.xiangjiahui.weblog.common.utils.Response;
 import io.swagger.annotations.Api;
@@ -31,7 +30,6 @@ public class AdminBlogSettingsController {
     @ApiOperation(value = "博客基础信息修改")
     @ApiOperationLog(description = "博客基础信息修改")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_ROOT')")
-    @ApiRequestLimit
     public ResponseEntity<Response> updateBlogSettings(@RequestBody @Validated UpdateBlogSettingsReqVO vo) {
         return service.updateBlogSettings(vo) ? ResponseEntity.ok(Response.success("博客基础信息修改成功"))
                 : ResponseEntity.ok(Response.fail("博客基础信息修改失败"));
@@ -41,7 +39,6 @@ public class AdminBlogSettingsController {
     @PostMapping("/getDetail")
     @ApiOperation(value = "获取博客设置详情")
     @ApiOperationLog(description = "获取博客设置详情")
-    @ApiRequestLimit
     public ResponseEntity<Response> getDetail() {
         return ResponseEntity.ok(Response.success(service.getDetail()));
     }

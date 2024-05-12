@@ -180,7 +180,7 @@ function initBlogSettings() {
         form.csdnHomepage = e.data.csdnHomepage
       }
     }
-  })
+  }).catch(error => {})
 }
 // 手动调用一下初始化方法
 initBlogSettings()
@@ -195,7 +195,7 @@ const handleLogoChange = (file) => {
     // 成功则设置 logo 链接，并提示成功
     form.logo = res.data.url
     showMessage('上传成功')
-  })
+  }).catch(error => {})
 }
 
 // 上传作者头像
@@ -208,7 +208,7 @@ const handleAvatarChange = (file) => {
     // 成功则设置作者头像链接，并提示成功
     form.avatar = e.data.url
     showMessage('上传成功')
-  })
+  }).catch(error => {})
 }
 
 // 保存当前博客设置
@@ -226,7 +226,8 @@ const onSubmit = () => {
       // 重新渲染页面中的信息
       initBlogSettings()
       showMessage('保存成功')
-    }).finally(() => btnLoading.value = false) // 隐藏保存按钮 loading
+    }).catch(error => {console.log(error)})
+        .finally(() => btnLoading.value = false) // 隐藏保存按钮 loading
   })
 }
 </script>

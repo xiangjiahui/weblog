@@ -122,11 +122,7 @@ const onSubmit = () => {
         // 提示消息
         showMessage(message, 'error')
       }
-    }).catch(error => {
-      if (error.message === '"Network Error"') {
-
-      }
-    }).finally(() => {
+    }).catch(error => {}).finally(() => {
       loading.value = false
     })
   })

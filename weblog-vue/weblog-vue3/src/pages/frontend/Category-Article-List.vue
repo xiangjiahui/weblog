@@ -333,8 +333,7 @@ function getCategoryArticles(currentNo) {
       pages.value = res.totalPages
       console.log(articles)
     }
-  }).catch(error => {
-  })
+  }).catch(error => {})
 }
 
 getCategoryArticles(current.value)

@@ -1,5 +1,6 @@
 package com.xiangjiahui.weblog.common.utils;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -12,6 +13,7 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 @Component(value = "redisCommand")
+@Slf4j
 //@SuppressWarnings(value = "all")
 public class RedisCommand {
 
@@ -590,13 +592,17 @@ public class RedisCommand {
     }
 
 
-    public boolean zSet(String key, long value, long score) {
+    /*public boolean zSet(String key, long value, long score) {
         try {
             return redisTemplate.opsForZSet().add(key,value,score);
         }catch (Exception e) {
             e.printStackTrace();
             return false;
         }
+    }*/
+
+    public void zSet(String key, long value, long score) {
+        redisTemplate.opsForZSet().add(key,value,score);
     }
 
 
@@ -609,12 +615,20 @@ public class RedisCommand {
         }
     }
 
-    public Long zRemoveRangeByScore(String key, double min, double max) {
+    /*public Long zRemoveRangeByScore(String key, double min, double max) {
         try {
             return redisTemplate.opsForZSet().removeRangeByScore(key, min, max);
         }catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
             return 0L;
+        }
+    }*/
+
+    public void zRemoveRangeByScore(String key, double min, double max) {
+        try {
+            redisTemplate.opsForZSet().removeRangeByScore(key, min, max);
+        }catch (Exception e) {
+            log.error(e.getMessage());
         }
     }
 }

@@ -25,7 +25,7 @@
 </template>
 
 <script setup>
-import {ref, computed, reactive} from 'vue'
+import {ref, computed, reactive, watch} from 'vue'
 import { useRoute,useRouter } from 'vue-router'
 import { useMenuStore } from '@/stores/menu'
 import { getAllMenu } from '@/api/admin/menu'
@@ -52,12 +52,15 @@ const getMenu = () => {
     getAllMenu().then((res) => {
       //menus.value = res.data
       setMenuList(res.data)
-    })
+    }).catch(error => {})
   }
 }
 getMenu()
 const menus = ref([{}])
 menus.value = getMenuList()
+watch(menus.value, (newValue, oldValue) => {
+  menus.value = newValue
+})
 
 // const menus = [
 //   {

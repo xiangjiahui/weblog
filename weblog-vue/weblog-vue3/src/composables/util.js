@@ -8,6 +8,8 @@ export function showMessage(message = '提示内容', type = 'success', customCl
         type: type,
         message,
         customClass,
+        showClose: true,
+        duration: 1000
     })
 }
 

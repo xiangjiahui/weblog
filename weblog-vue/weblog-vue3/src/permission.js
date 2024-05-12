@@ -36,6 +36,7 @@ router.afterEach((to, from) => {
     hidePageLoading()
 
     // 动态设置页面 Title
-    let title = (to.meta.title ? to.meta.title : '') + ' - Weblog'
+    // let title = (to.meta.title ? to.meta.title : '') + ' - Weblog'
+    let title = (to.meta.title ? to.meta.title : '')
     document.title = title
 })

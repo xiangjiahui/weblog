@@ -26,7 +26,7 @@ getTagList().then((res) => {
   if (res.success) {
     tags.value = res.data
   }
-})
+}).catch(error => {})
 
 // 跳转标签文章列表页
 const goTagArticleListPage = (id, name) => {

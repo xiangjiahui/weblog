@@ -1,7 +1,6 @@
 package com.xiangjiahui.weblog.controller;
 
 import com.xiangjiahui.weblog.common.annotation.ApiOperationLog;
-import com.xiangjiahui.weblog.common.annotation.ApiRequestLimit;
 import com.xiangjiahui.weblog.common.utils.PageResponse;
 import com.xiangjiahui.weblog.model.vo.archive.FindArchiveArticlePageListReqVO;
 import com.xiangjiahui.weblog.service.ArchiveService;
@@ -26,7 +25,6 @@ public class ArchiveController {
     @PostMapping("/archive/list")
     @ApiOperation(value = "获取文章归档分页数据")
     @ApiOperationLog(description = "获取文章归档分页数据")
-    @ApiRequestLimit
     public ResponseEntity<PageResponse> findArchivePageList(@RequestBody FindArchiveArticlePageListReqVO vo) {
         return ResponseEntity.ok(archiveService.findArchivePageList(vo));
     }

@@ -330,7 +330,7 @@ const deleteArticleSubmit = (row) => {
       showMessage('删除成功')
       // 重新请求分页接口，渲染数据
       getTableData()
-    })
+    }).catch(error => console.log(error))
   }).catch(() => {
     console.log('取消了')
   })
@@ -412,7 +412,7 @@ const handleUpdateCoverChange = (file) => {
     // 成功则设置表单对象中的封面链接，并提示上传成功
     updateArticleForm.cover = e.data.url
     showMessage('上传成功')
-  })
+  }).catch(error => {})
 }
 
 // 编辑器图片上传
@@ -428,7 +428,7 @@ const onUploadImg = async (files, callback) => {
             console.log('访问路径：' + res.data.url)
             // 调用 callback 函数，回显上传图片
             callback([res.data.url]);
-          })
+          }).catch(error => {})
         });
       })
   );
@@ -439,7 +439,7 @@ const categories = ref([])
 getCategorySelectList().then((e) => {
   console.log('获取分类数据',e.data)
   categories.value = e.data
-})
+}).catch(error => {})
 
 // 标签 select Loading 状态，默认不显示
 const tagSelectLoading = ref(false)
@@ -449,7 +449,7 @@ const tags = ref([])
 getTagSelectList().then(res => {
   console.log('获取标签数据',res.data)
   tags.value = res.data
-})
+}).catch(error => {})
 
 
 // 根据用户输入的标签名称，远程模糊查询
@@ -465,7 +465,8 @@ const remoteMethod = (query) => {
         // 设置到 tags 变量中
         tags.value = e.data
       }
-    }).finally(() => tagSelectLoading.value = false) // 隐藏 loading
+    }).catch(error => {})
+        .finally(() => tagSelectLoading.value = false) // 隐藏 loading
   }
 }
 
@@ -500,7 +501,7 @@ const publishArticleSubmit = () => {
       form.tags = []
       // 重新请求分页接口，渲染列表数据
       getTableData()
-    })
+    }).catch(error => console.log(error))
   })
 }
 
@@ -526,7 +527,7 @@ const showArticleUpdateEditor = (row) => {
       updateArticleForm.tags = res.data.tagIds
       updateArticleForm.summary = res.data.summary
     }
-  })
+  }).catch(error => console.log(error))
 }
 
 // 保存文章
@@ -553,7 +554,7 @@ const updateSubmit = () => {
       isArticleUpdateEditorShow.value = false
       // 重新请求分页接口，渲染列表数据
       getTableData()
-    })
+    }).catch(error => console.log(error))
   })
 }
 

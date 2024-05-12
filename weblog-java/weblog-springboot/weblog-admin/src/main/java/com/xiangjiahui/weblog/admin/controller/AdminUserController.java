@@ -4,7 +4,6 @@ package com.xiangjiahui.weblog.admin.controller;
 import com.xiangjiahui.weblog.admin.domains.vo.user.UpdateAdminUserVO;
 import com.xiangjiahui.weblog.admin.service.AdminUserService;
 import com.xiangjiahui.weblog.common.annotation.ApiOperationLog;
-import com.xiangjiahui.weblog.common.annotation.ApiRequestLimit;
 import com.xiangjiahui.weblog.common.model.UpdateSaveUserVO;
 import com.xiangjiahui.weblog.common.model.UserPageReqVO;
 import com.xiangjiahui.weblog.common.utils.PageResponse;
@@ -32,7 +31,6 @@ public class AdminUserController {
     @PostMapping("/password/update")
     @ApiOperation(value = "修改用户密码")
     @ApiOperationLog(description = "修改用户密码")
-    @ApiRequestLimit
     @PreAuthorize("hasRole('ROLE_ROOT')")
     public ResponseEntity<Response> updatePassword(@RequestBody @Validated UpdateAdminUserVO vo) {
         int count = adminUserService.updatePasswordByUsername(vo);
@@ -45,7 +43,6 @@ public class AdminUserController {
     @PostMapping("/user/getUserInfo")
     @ApiOperation(value = "查询用户信息")
     @ApiOperationLog(description = "查询用户信息")
-    @ApiRequestLimit
     public ResponseEntity<Response> findUser() {
         return ResponseEntity.ok().body(Response.success(adminUserService.findUser()));
     }
@@ -54,7 +51,6 @@ public class AdminUserController {
     @PostMapping("/user/getPageUserList")
     @ApiOperation(value = "分页查询用户列表")
     @ApiOperationLog(description = "分页查询用户列表")
-    @ApiRequestLimit
     public ResponseEntity<PageResponse> getPageUserList(@RequestBody UserPageReqVO vo) {
         return ResponseEntity.ok().body(adminUserService.getPageUserList(vo));
     }
@@ -64,7 +60,6 @@ public class AdminUserController {
     @ApiOperation(value = "添加用户")
     @ApiOperationLog(description = "添加用户")
     @PreAuthorize("hasRole('ROLE_ROOT')")
-    @ApiRequestLimit
     public ResponseEntity<Response> addUser(@RequestBody @Validated UpdateSaveUserVO vo) {
         adminUserService.addUser(vo);
         return ResponseEntity.ok().body(Response.success("添加成功"));
@@ -75,7 +70,6 @@ public class AdminUserController {
     @ApiOperation(value = "修改用户")
     @ApiOperationLog(description = "修改用户")
     @PreAuthorize("hasRole('ROLE_ROOT')")
-    @ApiRequestLimit
     public ResponseEntity<Response> updateUser(@RequestBody @Validated UpdateSaveUserVO vo) {
         boolean result = adminUserService.updateUser(vo);
         return result ? ResponseEntity.ok().body(Response.success("修改成功")) :

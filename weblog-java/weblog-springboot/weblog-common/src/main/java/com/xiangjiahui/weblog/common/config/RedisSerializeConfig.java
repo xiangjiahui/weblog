@@ -3,6 +3,7 @@ package com.xiangjiahui.weblog.common.config;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
 import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,18 +24,19 @@ public class RedisSerializeConfig {
     @Bean
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory) {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
-        RedisSerializer<String> redisSerializer = new StringRedisSerializer();
+        //RedisSerializer<String> redisSerializer = new StringRedisSerializer();
         Jackson2JsonRedisSerializer<Object> jsonRedisSerializer = new Jackson2JsonRedisSerializer<>(Object.class);
         ObjectMapper mapper = new ObjectMapper();
         mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-        mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+//        mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+        mapper.activateDefaultTyping(LaissezFaireSubTypeValidator.instance, ObjectMapper.DefaultTyping.NON_FINAL);
         jsonRedisSerializer.setObjectMapper(mapper);
 
         redisTemplate.setConnectionFactory(factory);
 
-        redisTemplate.setKeySerializer(redisSerializer);
+        redisTemplate.setKeySerializer(redisSerializer());
 
-        redisTemplate.setHashKeySerializer(redisSerializer);
+        redisTemplate.setHashKeySerializer(redisSerializer());
 
         redisTemplate.setHashValueSerializer(jsonRedisSerializer);
 
@@ -49,16 +51,17 @@ public class RedisSerializeConfig {
 
     @Bean
     public CacheManager cacheManager(RedisConnectionFactory factory){
-        RedisSerializer<String> redisSerializer = new StringRedisSerializer();
+        //RedisSerializer<String> redisSerializer = new StringRedisSerializer();
         Jackson2JsonRedisSerializer<Object> jsonRedisSerializer = new Jackson2JsonRedisSerializer<>(Object.class);
         //解决查询缓存转换异常的问题
         ObjectMapper mapper = new ObjectMapper();
         mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-        mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+        //mapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
+        mapper.activateDefaultTyping(LaissezFaireSubTypeValidator.instance,ObjectMapper.DefaultTyping.NON_FINAL);
         jsonRedisSerializer.setObjectMapper(mapper);
         //配置序列化(解决乱码问题,过期时间12000秒)
         RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofSeconds(12000))
-                .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(redisSerializer))
+                .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(redisSerializer()))
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(jsonRedisSerializer))
                 .disableCachingNullValues();
         RedisCacheManager cacheManager = RedisCacheManager.builder(factory)
@@ -66,5 +69,10 @@ public class RedisSerializeConfig {
                 .build();
 
         return cacheManager;
+    }
+
+    @Bean("stringRedisSerializer")
+    public RedisSerializer<String> redisSerializer(){
+        return new StringRedisSerializer();
     }
 }

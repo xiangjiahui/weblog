@@ -1,6 +1,6 @@
 {
-  "name": "weblog-vue3",
-  "version": "0.1.0",
+  "name": "xjh-log",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "vue-cli-service serve",

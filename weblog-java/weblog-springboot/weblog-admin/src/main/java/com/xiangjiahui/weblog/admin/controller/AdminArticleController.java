@@ -6,7 +6,6 @@ import com.xiangjiahui.weblog.admin.domains.vo.article.FindArticlePageListReqVO;
 import com.xiangjiahui.weblog.admin.domains.vo.article.UpdateArticleReqVO;
 import com.xiangjiahui.weblog.admin.service.AdminArticleService;
 import com.xiangjiahui.weblog.common.annotation.ApiOperationLog;
-import com.xiangjiahui.weblog.common.annotation.ApiRequestLimit;
 import com.xiangjiahui.weblog.common.model.vo.article.PublishArticleReqVO;
 import com.xiangjiahui.weblog.common.utils.PageResponse;
 import com.xiangjiahui.weblog.common.utils.Response;
@@ -34,7 +33,6 @@ public class AdminArticleController {
     @ApiOperation(value = "文章发布")
     @ApiOperationLog(description = "文章发布")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_ROOT')")
-    @ApiRequestLimit
     public ResponseEntity<Response> publishArticle(@RequestBody @Validated PublishArticleReqVO vo) {
         articleService.publishArticle(vo);
         return ResponseEntity.ok().body(Response.success("文章发布成功"));
@@ -46,7 +44,6 @@ public class AdminArticleController {
     @ApiOperation(value = "文章删除")
     @ApiOperationLog(description = "文章删除")
     @PreAuthorize("hasRole('ROLE_ROOT')")
-    @ApiRequestLimit
     public ResponseEntity<Response> deleteArticle(@RequestBody @Validated DeleteArticleReqVO vo) {
         return articleService.deleteArticle(vo) ? ResponseEntity.ok().body(Response.success("文章删除成功"))
                 : ResponseEntity.ok().body(Response.fail("文章删除失败"));
@@ -56,7 +53,6 @@ public class AdminArticleController {
     @PostMapping("/getPageList")
     @ApiOperation(value = "文章分页数据获取")
     @ApiOperationLog(description = "文章分页数据获取")
-    @ApiRequestLimit
     public ResponseEntity<PageResponse> getArticlePageList(@RequestBody @Validated FindArticlePageListReqVO vo) {
         return ResponseEntity.ok().body(articleService.findArticlePageList(vo));
     }
@@ -65,7 +61,6 @@ public class AdminArticleController {
     @PostMapping("/detail")
     @ApiOperation(value = "文章详情获取")
     @ApiOperationLog(description = "文章详情获取")
-    @ApiRequestLimit
     public ResponseEntity<Response> getArticleDetail(@RequestBody @Validated FindArticleDetailReqVO vo) {
         return ResponseEntity.ok().body(Response.success(articleService.findArticleDetail(vo)));
     }
@@ -75,7 +70,6 @@ public class AdminArticleController {
     @ApiOperation(value = "文章更新")
     @ApiOperationLog(description = "文章更新")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_ROOT','ROLE_GUEST')")
-    @ApiRequestLimit
     public ResponseEntity<Response> updateArticle(@RequestBody @Validated UpdateArticleReqVO vo) {
         return articleService.updateArticle(vo) ? ResponseEntity.ok().body(Response.success("文章更新成功"))
                 : ResponseEntity.ok().body(Response.fail("文章更新失败"));

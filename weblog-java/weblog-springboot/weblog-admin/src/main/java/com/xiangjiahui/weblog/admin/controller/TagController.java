@@ -4,7 +4,6 @@ import com.xiangjiahui.weblog.admin.domains.vo.tag.SearchTagsReqVO;
 import com.xiangjiahui.weblog.admin.domains.vo.tag.TagReqVO;
 import com.xiangjiahui.weblog.admin.service.TagService;
 import com.xiangjiahui.weblog.common.annotation.ApiOperationLog;
-import com.xiangjiahui.weblog.common.annotation.ApiRequestLimit;
 import com.xiangjiahui.weblog.common.model.TagPageListReqVO;
 import com.xiangjiahui.weblog.common.utils.PageResponse;
 import com.xiangjiahui.weblog.common.utils.Response;
@@ -30,7 +29,6 @@ public class TagController {
     @ApiOperation(value = "添加标签")
     @ApiOperationLog(description = "添加标签")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_ROOT')")
-    @ApiRequestLimit
     public ResponseEntity<Response> addCategory(@RequestBody @Validated TagReqVO tagReqVO) {
         boolean insert = tagService.addTags(tagReqVO);
         return insert ? ResponseEntity.ok().body(Response.success("添加成功"))
@@ -41,7 +39,6 @@ public class TagController {
     @PostMapping("/tag/getPageList")
     @ApiOperation(value = "分类标签数据获取")
     @ApiOperationLog(description = "分类标签数据获取")
-    @ApiRequestLimit
     public ResponseEntity<PageResponse> getTagPageList(@RequestBody TagPageListReqVO vo) {
         return ResponseEntity.ok().body(tagService.getPageList(vo));
     }
@@ -51,7 +48,6 @@ public class TagController {
     @ApiOperation(value = "根据ID删除标签")
     @ApiOperationLog(description = "根据ID删除标签")
     @PreAuthorize("hasRole('ROLE_ROOT')")
-    @ApiRequestLimit
     public ResponseEntity<Response> deleteTagByID(@RequestParam("id") Long id) {
         return tagService.deleteTagByID(id) == 0 ? ResponseEntity.badRequest().body(Response.fail("删除失败或者不存在当前标签ID"))
                 : ResponseEntity.ok().body(Response.success("删除成功"));
@@ -61,7 +57,6 @@ public class TagController {
     @GetMapping("/tag/getAll")
     @ApiOperation(value = "获取所有标签")
     @ApiOperationLog(description = "获取所有标签")
-    @ApiRequestLimit
     public ResponseEntity<Response> getAllTag() {
         return ResponseEntity.ok().body(Response.success(tagService.getAllTag()));
     }
@@ -69,7 +64,6 @@ public class TagController {
     @PostMapping("/tag/search")
     @ApiOperation(value = "标签模糊查询")
     @ApiOperationLog(description = "标签模糊查询")
-    @ApiRequestLimit
     public ResponseEntity<Response> searchTags(@RequestBody @Validated SearchTagsReqVO searchTagsReqVO) {
         return ResponseEntity.ok().body(Response.success(tagService.searchTags(searchTagsReqVO)));
     }

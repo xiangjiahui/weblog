@@ -50,7 +50,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Response> accessDeniedException(AccessDeniedException e) {
         // 捕获到鉴权失败异常，主动抛出，交给 RestAccessDeniedHandler 去处理
         log.info("============= 捕获到 AccessDeniedException");
-        return ResponseEntity.badRequest().body(Response.fail("没有权限操作此功能"));
+        return ResponseEntity.badRequest().body(Response.fail("test和guest账号没有权限操作此功能"));
     }
 
 
@@ -78,7 +78,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = ConnectException.class)
     public ResponseEntity<Response> connectException(ConnectException e) {
         log.error("{} request error, errorMessage: {} ", HttpUtil.getURL(), e.getMessage());
-        return ResponseEntity.badRequest().body(Response.fail("连接失败: " + e.getMessage()));
+        String errorMsg = e.getMessage().split(" no further information: ")[1];
+        return ResponseEntity.badRequest().body(Response.fail("连接失败: " + errorMsg));
     }
 
     @ExceptionHandler(value = DateTimeException.class)
@@ -111,16 +112,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = NullPointerException.class)
     public ResponseEntity<Response> programException(NullPointerException e) {
         log.error("{} request error, errorMessage: {} ", HttpUtil.getURL(), e.getMessage());
-        return ResponseEntity.internalServerError().body(Response.internalServerError("未知的程序错误"));
+        return ResponseEntity.internalServerError().body(Response.internalServerError("程序空指针异常,未知的程序错误"));
     }
-
-
-//    @ExceptionHandler(value = BatchUpdateException.class)
-//    public ResponseEntity<Response> batchUpdateException(Exception e) {
-//        log.error("{} request error, errorMessage: {} ", HttpUtil.getURL(), e.getMessage());
-//        if (e.getMessage().contains("Duplicate entry")) {
-//            return ResponseEntity.badRequest().body(Response.fail("该分类已存在"));
-//        }
-//        return ResponseEntity.badRequest().body(Response.fail(e.getMessage()));
-//    }
 }

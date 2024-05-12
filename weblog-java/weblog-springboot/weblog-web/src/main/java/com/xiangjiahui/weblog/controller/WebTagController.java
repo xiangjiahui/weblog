@@ -2,7 +2,6 @@ package com.xiangjiahui.weblog.controller;
 
 
 import com.xiangjiahui.weblog.common.annotation.ApiOperationLog;
-import com.xiangjiahui.weblog.common.annotation.ApiRequestLimit;
 import com.xiangjiahui.weblog.common.utils.PageResponse;
 import com.xiangjiahui.weblog.common.utils.Response;
 import com.xiangjiahui.weblog.model.vo.tag.FindTagArticlePageListReqVO;
@@ -29,7 +28,6 @@ public class WebTagController {
     @PostMapping("/list")
     @ApiOperation(value = "前台获取标签列表")
     @ApiOperationLog(description = "前台获取标签列表")
-    @ApiRequestLimit
     public ResponseEntity<Response> findTagList() {
         return ResponseEntity.ok(Response.success(tagService.findTagList()));
     }
@@ -38,7 +36,6 @@ public class WebTagController {
     @PostMapping("/article/list")
     @ApiOperation(value = "前台获取标签下文章列表")
     @ApiOperationLog(description = "前台获取标签下文章列表")
-    @ApiRequestLimit
     public ResponseEntity<PageResponse> findTagPageList(@RequestBody @Validated FindTagArticlePageListReqVO vo){
         return ResponseEntity.ok(tagService.findTagPageList(vo));
     }

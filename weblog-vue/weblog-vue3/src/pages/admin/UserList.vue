@@ -304,9 +304,8 @@ function getTableData() {
       size.value = res.size
       total.value = res.total
     }
-  }).catch(error => {
-      }
-  ).finally(() => {
+  }).catch(error => {})
+      .finally(() => {
     tableLoading.value = false
   })
 }

@@ -2,7 +2,6 @@ package com.xiangjiahui.weblog.admin.controller;
 
 import com.xiangjiahui.weblog.admin.service.AdminDashboardService;
 import com.xiangjiahui.weblog.common.annotation.ApiOperationLog;
-import com.xiangjiahui.weblog.common.annotation.ApiRequestLimit;
 import com.xiangjiahui.weblog.common.utils.Response;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -24,7 +23,6 @@ public class AdminDashboardController {
     @PostMapping("/statistics")
     @ApiOperation(value = "获取后台仪表盘基础统计信息")
     @ApiOperationLog(description = "获取后台仪表盘基础统计信息")
-    @ApiRequestLimit
     public ResponseEntity<Response> findDashboardStatistics(){
         return ResponseEntity.ok(Response.success(service.findDashboardStatistics()));
     }
@@ -33,7 +31,6 @@ public class AdminDashboardController {
     @PostMapping("/publishArticle/statistics")
     @ApiOperation(value = "获取后台仪表盘文章发布统计信息")
     @ApiOperationLog(description = "获取后台仪表盘文章发布统计信息")
-    @ApiRequestLimit
     public ResponseEntity<Response> findDashboardPublishArticleStatistics(){
         return ResponseEntity.ok(Response.success(service.findDashboardPublishArticleStatistics()));
     }
@@ -42,7 +39,6 @@ public class AdminDashboardController {
     @PostMapping("/pv/statistics")
     @ApiOperation(value = "获取后台仪表盘最近一周 PV 访问量统计信息")
     @ApiOperationLog(description = "获取后台仪表盘最近一周 PV 访问量统计信息")
-    @ApiRequestLimit
     public ResponseEntity<Response> findDashboardPVStatistics(){
         return ResponseEntity.ok(Response.success(service.findDashboardPVStatistics()));
     }

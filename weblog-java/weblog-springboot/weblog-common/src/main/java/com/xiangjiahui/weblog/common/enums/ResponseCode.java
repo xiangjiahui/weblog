@@ -15,7 +15,8 @@ public enum ResponseCode {
     Internal_Server_Error(500, "服务器内部错误"),
     Service_Unavailable(503, "服务不可用"),
     Gateway_Timeout(504, "网关超时"),
-    Request_Timeout(408, "请求超时");
+    Request_Timeout(408, "请求超时"),
+    TO_MANY_REQUESTS(429, "请求过于频繁");
 
     private final int code;
 

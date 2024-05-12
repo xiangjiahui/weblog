@@ -127,4 +127,23 @@ public class Response {
     public static Response internalServerError(String message, Object data) {
         return new Response(false,ResponseCode.Internal_Server_Error.getCode(), message, data);
     }
+
+
+
+    //-------------请求过于频繁错误消息-------------
+    public static Response requestTooMany() {
+        return new Response(false,ResponseCode.TO_MANY_REQUESTS.getCode(), ResponseCode.TO_MANY_REQUESTS.getMessage());
+    }
+
+    public static Response requestTooMany(String message) {
+        return new Response(false,ResponseCode.TO_MANY_REQUESTS.getCode(), message);
+    }
+
+    public static Response requestTooMany(Object data) {
+        return new Response(false,ResponseCode.TO_MANY_REQUESTS.getCode(), ResponseCode.TO_MANY_REQUESTS.getMessage(), data);
+    }
+
+    public static Response requestTooMany(String message, Object data) {
+        return new Response(false,ResponseCode.TO_MANY_REQUESTS.getCode(), message, data);
+    }
 }

@@ -41,13 +41,9 @@ module.exports = defineConfig({
             })
         ]
     },
-    // devServer: {
-    //   proxy: {
-    //     '/api': {
-    //       target: 'http://localhost:8088',
-    //       changeOrigin: true,
-    //       rewrite: (path) => path.replace(/^\/api/, ''),
-    //     },
-    //   }
-    // },
+    devServer: {
+        client: {
+            overlay: false // 关闭浏览器错误提示,不弹出全屏错误
+        }
+    }
 })

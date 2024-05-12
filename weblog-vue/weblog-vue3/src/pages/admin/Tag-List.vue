@@ -161,9 +161,8 @@ function getTableData() {
           size.value = res.size
           total.value = res.total
         }
-      }).catch(() => {
-
-  }).finally(() => tableLoading.value = false) // 隐藏表格 loading
+      }).catch(() => {})
+      .finally(() => tableLoading.value = false) // 隐藏表格 loading
 }
 getTableData()
 
@@ -227,9 +226,8 @@ const onSubmit = () => {
         // 重新请求分页接口，渲染数据
         getTableData()
       }
-    }).catch(() => {
-
-    }).finally(() => formDialogRef.value.closeBtnLoading()) // 隐藏提交按钮 loading
+    }).catch(() => {})
+        .finally(() => formDialogRef.value.closeBtnLoading()) // 隐藏提交按钮 loading
 
   })
 }
@@ -244,7 +242,7 @@ const deleteTagSubmit = (row) => {
         // 重新请求分页接口，渲染数据
         getTableData()
       }
-    })
+    }).catch(error => {})
   }).catch(() => {
     console.log('取消了')
   })

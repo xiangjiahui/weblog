@@ -7,7 +7,7 @@ import { useRouter } from "vue-router";
 const router = useRouter();
 
 const log_service = axios.create({
-    baseURL: 'http://192.168.2.10:8088',
+    baseURL: 'http://192.168.1.6:8088',
     timeout: 5000,
     headers: {
         'Content-Type': 'application/json;charset=utf-8'

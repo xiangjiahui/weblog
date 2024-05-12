@@ -9,7 +9,7 @@
       <div class="col-span-4 md:col-span-3 mb-3">
         <!-- 文章列表，grid 表格布局，分为 2 列 -->
         <div class="grid grid-cols-2 gap-4">
-            <div v-for="(article, index) in articles" :key="index" class="col-span-2 md:col-span-1">
+            <div v-for="(article, index) in articles" :key="index" class="col-span-2 md:col-span-1 article-card">
               <div class="bg-white h-full border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700">
                 <!-- 文章封面 -->
                 <a @click="goArticleDetailPage(article.id)" class="cursor-pointer">
@@ -60,7 +60,7 @@
 
         <!-- 分页 -->
         <nav aria-label="Page navigation example" class="mt-10 flex justify-center" v-if="pages >= 1">
-          <ul class="flex items-center -space-x-px h-10 text-base">
+          <ul class="flex items-center -space-x-px h-20 text-base">
             <!-- 上一页 -->
             <li>
               <a @click="getArticles(current - 1)"
@@ -165,7 +165,7 @@ function getArticles(currentNo) {
       total.value = res.total
       pages.value = res.totalPages
     }
-  })
+  }).catch(error => console.log(error))
 }
 
 getArticles(current.value)
@@ -175,3 +175,9 @@ const goArticleDetailPage = (articleId) => {
   router.push('/article/' + articleId)
 }
 </script>
+<style scoped>
+.article-card {
+  width: 27rem;
+  /*height: 24rem;*/
+}
+</style>

@@ -2,7 +2,6 @@ package com.xiangjiahui.weblog.admin.controller;
 
 import com.xiangjiahui.weblog.admin.service.AdminFileService;
 import com.xiangjiahui.weblog.common.annotation.ApiOperationLog;
-import com.xiangjiahui.weblog.common.annotation.ApiRequestLimit;
 import com.xiangjiahui.weblog.common.utils.Response;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -30,7 +29,6 @@ public class AdminFileController {
     @PostMapping("/file/upload")
     @ApiOperation(value = "文件上传")
     @ApiOperationLog(description = "文件上传")
-    @ApiRequestLimit
     public ResponseEntity<Response> uploadFile(@RequestParam MultipartFile file) throws Exception {
         return ResponseEntity.ok().body(
                 Response.success("上传文件至 Minio 成功",adminFileService.uploadFile(file)));
@@ -40,7 +38,6 @@ public class AdminFileController {
     @PostMapping("/file/download")
     @ApiOperation(value = "文件下载")
     @PreAuthorize("hasRole('ROLE_ROOT')")
-    @ApiRequestLimit
     public void downloadFile(HttpServletResponse response,@RequestParam("fileName") String fileName) {
         try {
             adminFileService.downloadFile(response, fileName);
@@ -53,7 +50,6 @@ public class AdminFileController {
     @ApiOperation(value = "文件删除")
     @ApiOperationLog(description = "文件删除")
     @PreAuthorize("hasRole('ROLE_ROOT')")
-    @ApiRequestLimit
     public ResponseEntity<Response> deleteFile(@RequestParam("fileName") String fileName) {
         return adminFileService.deleteFile(fileName) ? ResponseEntity.ok().body(Response.success("删除文件成功"))
                 : ResponseEntity.ok().body(Response.fail("删除文件失败"));
