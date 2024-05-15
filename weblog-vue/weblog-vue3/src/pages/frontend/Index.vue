@@ -158,14 +158,14 @@ function getArticles(currentNo) {
   // 调用分页接口渲染数据
   getArticlePageList({currentPage: currentNo, size: size.value}).then((res) => {
     if (res.success) {
-      console.log(res)
+      //console.log(res)
       articles.value = res.data
       current.value = res.currentPage
       size.value = res.size
       total.value = res.total
       pages.value = res.totalPages
     }
-  }).catch(error => console.log(error))
+  }).catch(error => {})
 }
 
 getArticles(current.value)

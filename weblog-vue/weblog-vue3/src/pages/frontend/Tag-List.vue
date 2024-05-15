@@ -49,7 +49,7 @@ getTagList().then((res) => {
   if (res.success) {
     tags.value = res.data
   }
-}).catch(error => {console.log(error)})
+}).catch(error => {})
 </script>
 
 <style scoped>

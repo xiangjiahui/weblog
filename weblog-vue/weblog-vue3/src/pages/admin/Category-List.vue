@@ -120,7 +120,7 @@ const datepickerChange = (e) => {
   startDate.value = moment(e[0]).format('YYYY-MM-DD')
   endDate.value = moment(e[1]).format('YYYY-MM-DD')
 
-  console.log('开始时间：' + startDate.value + ', 结束时间：' + endDate.value)
+  //console.log('开始时间：' + startDate.value + ', 结束时间：' + endDate.value)
 }
 
 const onSubmit = () => {
@@ -178,7 +178,7 @@ const handleSizeChange = (chooseSize) => {
 
 
 const deleteCategorySubmit = (row) => {
-  console.log(row)
+  //console.log(row)
   showModel('是否确定要删除该分类？').then(() => {
     deleteCategory(row.id).then((res) => {
           if (res.success === true) {

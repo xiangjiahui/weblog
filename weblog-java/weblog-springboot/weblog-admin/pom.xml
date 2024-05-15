@@ -42,8 +42,8 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct</artifactId>
+            <groupId>com.xiangjiahui</groupId>
+            <artifactId>weblog-search</artifactId>
         </dependency>
     </dependencies>
 </project>

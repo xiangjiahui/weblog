@@ -5,7 +5,7 @@ import {useBlogSettingsStore} from '@/stores/blogsetting'
 
 
 router.beforeEach((to, from, next) => {
-    console.log('==> 全局路由前置守卫')
+    //console.log('==> 全局路由前置守卫')
 
     showPageLoading()
 

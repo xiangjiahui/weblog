@@ -15,8 +15,8 @@ export const useUserStore = defineStore('user', () => {
                     userInfo.value = res.data
                 }
             }).catch(error => {
-                console.log('获取登录用户信息=====================')
-                console.log(error)
+                //console.log('获取登录用户信息=====================')
+                //console.log(error)
             })
         }
 

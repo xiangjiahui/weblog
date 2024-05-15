@@ -231,7 +231,7 @@ const datepickerChange = (e) => {
   startDate.value = moment(e[0]).format('YYYY-MM-DD')
   endDate.value = moment(e[1]).format('YYYY-MM-DD')
 
-  console.log('开始时间：' + startDate.value + ', 结束时间：' + endDate.value)
+  //console.log('开始时间：' + startDate.value + ', 结束时间：' + endDate.value)
 }
 
 // 跳转文章详情页
@@ -309,14 +309,14 @@ getTableData()
 
 // 每页展示数量变更事件
 const handleSizeChange = (chooseSize) => {
-  console.log('选择的页码' + chooseSize)
+  //console.log('选择的页码' + chooseSize)
   size.value = chooseSize
   getTableData()
 }
 
 // 删除文章
 const deleteArticleSubmit = (row) => {
-  console.log(row)
+  //console.log(row)
   showModel('是否确定要删除该文章？').then(() => {
     deleteArticle(row.id).then((res) => {
       if (res.success === false) {
@@ -330,9 +330,9 @@ const deleteArticleSubmit = (row) => {
       showMessage('删除成功')
       // 重新请求分页接口，渲染数据
       getTableData()
-    }).catch(error => console.log(error))
+    }).catch(error => {})
   }).catch(() => {
-    console.log('取消了')
+    //console.log('取消了')
   })
 }
 
@@ -424,8 +424,8 @@ const onUploadImg = async (files, callback) => {
           let formData = new FormData()
           formData.append("file", file);
           uploadFile(formData).then((res) => {
-            console.log(res)
-            console.log('访问路径：' + res.data.url)
+            //console.log(res)
+            //console.log('访问路径：' + res.data.url)
             // 调用 callback 函数，回显上传图片
             callback([res.data.url]);
           }).catch(error => {})
@@ -437,7 +437,7 @@ const onUploadImg = async (files, callback) => {
 // 文章分类
 const categories = ref([])
 getCategorySelectList().then((e) => {
-  console.log('获取分类数据',e.data)
+  //console.log('获取分类数据',e.data)
   categories.value = e.data
 }).catch(error => {})
 
@@ -447,14 +447,14 @@ const tagSelectLoading = ref(false)
 const tags = ref([])
 // 渲染标签数据
 getTagSelectList().then(res => {
-  console.log('获取标签数据',res.data)
+  //console.log('获取标签数据',res.data)
   tags.value = res.data
 }).catch(error => {})
 
 
 // 根据用户输入的标签名称，远程模糊查询
 const remoteMethod = (query) => {
-  console.log('远程搜索：' + tags.value)
+  //console.log('远程搜索：' + tags.value)
   // 如果用户的查询关键词不为空
   if (query) {
     // 显示 loading
@@ -473,7 +473,7 @@ const remoteMethod = (query) => {
 // 发布文章
 const publishArticleSubmit = () => {
   // isArticlePublishEditorShow.value = true
-  console.log('提交 md 内容：' + form.content)
+  //console.log('提交 md 内容：' + form.content)
   // 校验表单
   publishArticleFormRef.value.validate((valid) => {
     if (!valid) {
@@ -501,7 +501,7 @@ const publishArticleSubmit = () => {
       form.tags = []
       // 重新请求分页接口，渲染列表数据
       getTableData()
-    }).catch(error => console.log(error))
+    }).catch(error => {})
   })
 }
 
@@ -527,12 +527,11 @@ const showArticleUpdateEditor = (row) => {
       updateArticleForm.tags = res.data.tagIds
       updateArticleForm.summary = res.data.summary
     }
-  }).catch(error => console.log(error))
+  }).catch(error => {})
 }
 
 // 保存文章
 const updateSubmit = () => {
-  console.log('tijiao')
   updateArticleFormRef.value.validate((valid) => {
     // 校验表单
     if (!valid) {
@@ -554,7 +553,7 @@ const updateSubmit = () => {
       isArticleUpdateEditorShow.value = false
       // 重新请求分页接口，渲染列表数据
       getTableData()
-    }).catch(error => console.log(error))
+    }).catch(error => {})
   })
 }
 

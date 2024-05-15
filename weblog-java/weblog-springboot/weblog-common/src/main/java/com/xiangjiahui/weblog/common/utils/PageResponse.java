@@ -46,4 +46,17 @@ public class PageResponse {
         pageResponse.setData(data);
         return pageResponse;
     }
+
+    public static  PageResponse success(long total, long current, long size, Object data) {
+        PageResponse response = new PageResponse();
+        response.setSuccess(true);
+        response.setCurrentPage(current);
+        response.setSize(size);
+        // 计算总页数
+        int pages = (int) Math.ceil((double) total / size);
+        response.setTotalPages(pages);
+        response.setTotal(total);
+        response.setData(data);
+        return response;
+    }
 }

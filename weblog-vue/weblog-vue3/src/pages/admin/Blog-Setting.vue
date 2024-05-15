@@ -216,7 +216,7 @@ const onSubmit = () => {
   // 先验证 form 表单字段
   formRef.value.validate((valid) => {
     if (!valid) {
-      console.log('表单验证不通过')
+      //console.log('表单验证不通过')
       return false
     }
 
@@ -226,7 +226,7 @@ const onSubmit = () => {
       // 重新渲染页面中的信息
       initBlogSettings()
       showMessage('保存成功')
-    }).catch(error => {console.log(error)})
+    }).catch(error => {})
         .finally(() => btnLoading.value = false) // 隐藏保存按钮 loading
   })
 }

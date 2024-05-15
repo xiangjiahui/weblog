@@ -3,6 +3,7 @@ package com.xiangjiahui.weblog.service.impl;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.collect.Lists;
+import com.xiangjiahui.weblog.admin.event.PublishArticleEvent;
 import com.xiangjiahui.weblog.admin.event.ReadArticleEvent;
 import com.xiangjiahui.weblog.common.domain.dos.*;
 import com.xiangjiahui.weblog.common.domain.mapper.*;
@@ -46,6 +47,8 @@ public class ArticleServiceImpl implements ArticleService {
         this.articleContentMapper = articleContentMapper;
         this.eventPublisher = eventPublisher;
     }
+
+
     @Override
     public PageResponse findArticlePageList(FindIndexArticlePageListReqVO findIndexArticlePageListReqVO) {
         Long current = findIndexArticlePageListReqVO.getCurrentPage();
@@ -136,6 +139,8 @@ public class ArticleServiceImpl implements ArticleService {
         return PageResponse.success(articleDOPage, vos);
     }
 
+
+
     @Override
     public FindArticleDetailRspVO findArticleDetail(FindArticleDetailReqVO findArticleDetailReqVO) {
         Long articleId = findArticleDetailReqVO.getArticleId();
@@ -198,6 +203,7 @@ public class ArticleServiceImpl implements ArticleService {
 
         // 阅读量 + 1
         eventPublisher.publishEvent(new ReadArticleEvent(this, articleId));
+        eventPublisher.publishEvent(new PublishArticleEvent(this,articleId));
         return vo;
     }
 }

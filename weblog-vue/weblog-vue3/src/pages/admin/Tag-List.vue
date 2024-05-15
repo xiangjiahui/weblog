@@ -102,7 +102,7 @@ const datepickerChange = (e) => {
   startDate.value = moment(e[0]).format('YYYY-MM-DD')
   endDate.value = moment(e[1]).format('YYYY-MM-DD')
 
-  console.log('开始时间：' + startDate.value + ', 结束时间：' + endDate.value)
+  //console.log('开始时间：' + startDate.value + ', 结束时间：' + endDate.value)
 }
 
 const shortcuts = [
@@ -168,7 +168,7 @@ getTableData()
 
 // 每页展示数量变更事件
 const handleSizeChange = (chooseSize) => {
-  console.log('选择的页码' + chooseSize)
+  //console.log('选择的页码' + chooseSize)
   size.value = chooseSize
   getTableData()
 }
@@ -234,7 +234,7 @@ const onSubmit = () => {
 
 // 删除分类
 const deleteTagSubmit = (row) => {
-  console.log(row)
+  //console.log(row)
   showModel('是否确定要删除该分类？').then(() => {
     deleteTag(row.id).then((res) => {
       if (res.success === true) {
@@ -244,7 +244,7 @@ const deleteTagSubmit = (row) => {
       }
     }).catch(error => {})
   }).catch(() => {
-    console.log('取消了')
+    //console.log('取消了')
   })
 }
 

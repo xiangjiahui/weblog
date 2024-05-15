@@ -331,7 +331,7 @@ function getCategoryArticles(currentNo) {
       size.value = res.size
       total.value = res.total
       pages.value = res.totalPages
-      console.log(articles)
+      //console.log(articles)
     }
   }).catch(error => {})
 }

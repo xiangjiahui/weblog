@@ -2,6 +2,8 @@ package com.xiangjiahui.weblog.admin.service.impl;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xiangjiahui.weblog.admin.domains.vo.article.*;
+import com.xiangjiahui.weblog.admin.event.DeleteArticleEvent;
+import com.xiangjiahui.weblog.admin.event.UpdateArticleEvent;
 import com.xiangjiahui.weblog.admin.service.AdminArticleService;
 import com.xiangjiahui.weblog.common.domain.dos.*;
 import com.xiangjiahui.weblog.common.domain.mapper.*;
@@ -10,6 +12,7 @@ import com.xiangjiahui.weblog.common.model.vo.article.PublishArticleReqVO;
 import com.xiangjiahui.weblog.common.utils.PageResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,13 +39,16 @@ public class AdminArticleServiceImpl implements AdminArticleService {
 
     private final ArticleTagRelMapper articleTagRelMapper;
 
-    public AdminArticleServiceImpl(ArticleMapper articleMapper, ArticleContentMapper articleContentMapper, ArticleCategoryRelMapper articleCategoryRelMapper, CategoryMapper categoryMapper, TagMapper tagMapper, ArticleTagRelMapper articleTagRelMapper) {
+    private final ApplicationEventPublisher eventPublisher;
+
+    public AdminArticleServiceImpl(ArticleMapper articleMapper, ArticleContentMapper articleContentMapper, ArticleCategoryRelMapper articleCategoryRelMapper, CategoryMapper categoryMapper, TagMapper tagMapper, ArticleTagRelMapper articleTagRelMapper, ApplicationEventPublisher eventPublisher) {
         this.articleMapper = articleMapper;
         this.articleContentMapper = articleContentMapper;
         this.articleCategoryRelMapper = articleCategoryRelMapper;
         this.categoryMapper = categoryMapper;
         this.tagMapper = tagMapper;
         this.articleTagRelMapper = articleTagRelMapper;
+        this.eventPublisher = eventPublisher;
     }
 
     @Transactional(isolation = Isolation.SERIALIZABLE,rollbackFor = Exception.class)
@@ -109,6 +115,8 @@ public class AdminArticleServiceImpl implements AdminArticleService {
 
         // 4. 删除文章-标签关联记录
         articleTagRelMapper.deleteByArticleId(articleId);
+
+        eventPublisher.publishEvent(new DeleteArticleEvent(this,articleId));
 
         return true;
     }
@@ -216,20 +224,11 @@ public class AdminArticleServiceImpl implements AdminArticleService {
         articleTagRelMapper.deleteByArticleId(articleId);
         List<String> tags = vo.getTags();
         insertTags(tags,articleId);
+
+        eventPublisher.publishEvent(new UpdateArticleEvent(this,articleId));
+
         return true;
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     /**

@@ -4,10 +4,12 @@ import {showMessage} from '@/composables/util';
 import {removeToken} from '@/composables/cookie';
 import {useUserStore} from "@/stores/user";
 import { useRouter } from "vue-router";
+import { throttle } from 'lodash-es'
+
 const router = useRouter();
 
 const log_service = axios.create({
-    baseURL: 'http://192.168.1.6:8088',
+    baseURL: 'http://192.168.1.8:8088',
     timeout: 5000,
     headers: {
         'Content-Type': 'application/json;charset=utf-8'
@@ -16,7 +18,7 @@ const log_service = axios.create({
 
 log_service.interceptors.request.use(config => {
     const token = getToken()
-    console.log('统一添加请求头中的Token: ' + token)
+    //console.log('统一添加请求头中的Token: ' + token)
 
     if (token) {
         config.headers['Authorization'] = 'Bearer ' + token
@@ -30,7 +32,7 @@ log_service.interceptors.request.use(config => {
 log_service.interceptors.response.use(function (response) {
     return response.data
 },function (error) {
-    console.log(error)
+    //console.log(error)
 
     if (error.response.status === 401) {
         // 退出登录
@@ -44,7 +46,7 @@ log_service.interceptors.response.use(function (response) {
     }
 
     let errorMsg =  error.response.data.message ? error.response.data.message : '请求错误'
-    console.log(errorMsg)
+    // console.log(errorMsg)
     showMessage(errorMsg,'error')
 
     return Promise.reject(error)

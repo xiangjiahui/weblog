@@ -189,7 +189,7 @@ const onSubmit = () => {
   // 先验证 form 表单字段
   formRef.value.validate((valid) => {
     if (!valid) {
-      console.log('表单验证不通过')
+      //console.log('表单验证不通过')
       return false
     }
 
@@ -200,7 +200,7 @@ const onSubmit = () => {
 
     // 调用修改用户密码接口
     updateAdminPassword(form).then((res) => {
-      console.log(res)
+      //console.log(res)
       // 判断是否成功
       if (res.success === true) {
         showMessage('密码重置成功，请重新登录！')
@@ -225,8 +225,8 @@ const onSubmit = () => {
 // 监听 Pinia store 中的某个值的变化
 watch(() => userStore.userInfo.username, (newValue, oldValue) => {
   // 在这里处理变化后的值
-  console.log('新值:', newValue);
-  console.log('旧值:', oldValue);
+  //console.log('新值:', newValue);
+  //console.log('旧值:', oldValue);
 
   // 可以在这里执行任何你需要的逻辑
   // 重新将新的值，设置会 form 对象中

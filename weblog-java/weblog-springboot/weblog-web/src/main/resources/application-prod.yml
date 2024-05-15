@@ -37,3 +37,7 @@ minio:
   accessKey: minioadmin
   secretKey: minioadmin
   bucketName: weblog
+
+# Lucene 全文检索
+lucene:
+  indexDir: /weblog/lucene/index

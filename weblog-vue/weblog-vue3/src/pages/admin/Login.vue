@@ -93,17 +93,17 @@ const rules = {
 }
 
 const onSubmit = () => {
-  console.log('登录')
+  //console.log('登录')
   formRef.value.validate((valid) => {
     if (!valid) {
-      console.log('表单验证不通过')
+      //console.log('表单验证不通过')
       return false
     }
 
     loading.value = true
 
     login(form.username, form.password).then((res) => {
-      console.log(res)
+      //console.log(res)
 
       if (res.success === true) {
         showMessage('登录成功')
@@ -138,7 +138,7 @@ function onKeyUp(e) {
 
 // 添加键盘监听
 onMounted(() => {
-  console.log('添加键盘监听')
+  //console.log('添加键盘监听')
   document.addEventListener('keyup', onKeyUp)
 })
 

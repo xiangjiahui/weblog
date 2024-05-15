@@ -47,20 +47,24 @@ const handleSelect = (path) => {
 
 const isCollapse = computed(() =>  !(menuStore.menuWidth === '250px'))
 
+const menus = ref([{}])
+
 const getMenu = () => {
   if (!getMenuList()) {
     getAllMenu().then((res) => {
-      //menus.value = res.data
+      menus.value = res.data
       setMenuList(res.data)
+      // menus.value = getMenuList()
     }).catch(error => {})
+  }else {
+    menus.value = getMenuList()
   }
 }
 getMenu()
-const menus = ref([{}])
-menus.value = getMenuList()
-watch(menus.value, (newValue, oldValue) => {
-  menus.value = newValue
-})
+// watch(menus.value, (newValue, oldValue) => {
+//   console.log("菜单更新了",newValue,oldValue)
+//   menus.value = newValue
+// })
 
 // const menus = [
 //   {
