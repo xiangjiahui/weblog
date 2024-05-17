@@ -4,7 +4,6 @@ import com.xiangjiahui.weblog.common.domain.dos.StatisticsArticlePVDO;
 import com.xiangjiahui.weblog.common.domain.mapper.StatisticsArticlePVMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +12,6 @@ import java.time.LocalDateTime;
 
 @Component
 @Slf4j
-@EnableScheduling
 public class InitPVRecordScheduledTask {
 
     @Autowired

@@ -41,3 +41,10 @@ minio:
 # Lucene 全文检索
 lucene:
   indexDir: /weblog/lucene/index
+
+databackup:
+  username: root
+  password: XJH9901042832
+  databaseName: weblog
+  backupPath: /weblog/databackup
+  installPath: /usr/bin

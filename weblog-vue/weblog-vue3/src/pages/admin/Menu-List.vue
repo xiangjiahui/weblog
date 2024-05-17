@@ -22,13 +22,13 @@
 
     <el-card shadow="never">
       <!-- 新增按钮 -->
-<!--      <div class="mb-5">-->
-<!--        <el-button type="primary" @click="addMenuClick">-->
-<!--          <el-icon class="mr-1">-->
-<!--            <Plus />-->
-<!--          </el-icon>-->
-<!--          新增</el-button>-->
-<!--      </div>-->
+      <div class="mb-5">
+        <el-button type="primary" @click="addMenuClick">
+          <el-icon class="mr-1">
+            <Plus />
+          </el-icon>
+          新增</el-button>
+      </div>
 
       <!-- 菜单列表 -->
       <el-table :data="tableData" border stripe style="width: 100%" v-loading="tableLoading">
