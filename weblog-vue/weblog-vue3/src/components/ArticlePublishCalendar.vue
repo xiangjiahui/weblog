@@ -40,9 +40,9 @@ function initCalendar() {
     ]);
   }
 
-  var chartDom = document.getElementById('calendar');
-  var myChart = echarts.init(chartDom);
-  var option;
+  let chartDom = document.getElementById('calendar');
+  let myChart = echarts.init(chartDom, null, { width: 600 });
+  let option;
 
   option = {
     visualMap: {

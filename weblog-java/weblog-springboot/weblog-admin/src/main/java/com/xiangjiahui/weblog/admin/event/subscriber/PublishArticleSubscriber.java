@@ -1,6 +1,7 @@
 package com.xiangjiahui.weblog.admin.event.subscriber;
 
 import com.xiangjiahui.weblog.admin.event.PublishArticleEvent;
+import com.xiangjiahui.weblog.admin.service.AdminStatisticsService;
 import com.xiangjiahui.weblog.common.domain.dos.ArticleContentDO;
 import com.xiangjiahui.weblog.common.domain.dos.ArticleDO;
 import com.xiangjiahui.weblog.common.domain.mapper.ArticleContentMapper;
@@ -22,15 +23,15 @@ import java.time.format.DateTimeFormatter;
 public class PublishArticleSubscriber implements ApplicationListener<PublishArticleEvent> {
 
     private final LuceneHelper luceneHelper;
-
     private final ArticleMapper articleMapper;
-
     private final ArticleContentMapper articleContentMapper;
+    private final AdminStatisticsService statisticsService;
 
-    public PublishArticleSubscriber(LuceneHelper luceneHelper, ArticleMapper articleMapper, ArticleContentMapper articleContentMapper) {
+    public PublishArticleSubscriber(LuceneHelper luceneHelper, ArticleMapper articleMapper, ArticleContentMapper articleContentMapper, AdminStatisticsService statisticsService) {
         this.luceneHelper = luceneHelper;
         this.articleMapper = articleMapper;
         this.articleContentMapper = articleContentMapper;
+        this.statisticsService = statisticsService;
     }
 
 
@@ -66,5 +67,13 @@ public class PublishArticleSubscriber implements ApplicationListener<PublishArti
         long count = luceneHelper.addDocument(ArticleIndex.NAME, document);
 
         log.info("==> 添加文章对应 Lucene 文档结束，articleId: {}，受影响行数: {}", articleId, count);
+
+        // 重新统计各分类下文章总数
+        statisticsService.statisticsCategoryArticleTotal();
+        log.info("==> 重新统计各分类下文章总数");
+
+        // 重新统计各标签下文章总数
+        statisticsService.statisticsTagArticleTotal();
+        log.info("==> 重新统计各分类下文章总数");
     }
 }

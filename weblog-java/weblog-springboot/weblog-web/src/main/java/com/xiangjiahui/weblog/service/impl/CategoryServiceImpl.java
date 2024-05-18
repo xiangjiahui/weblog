@@ -12,6 +12,7 @@ import com.xiangjiahui.weblog.common.exception.BusinessException;
 import com.xiangjiahui.weblog.common.utils.PageResponse;
 import com.xiangjiahui.weblog.model.vo.category.FindCategoryArticlePageListReqVO;
 import com.xiangjiahui.weblog.model.vo.category.FindCategoryArticlePageListRspVO;
+import com.xiangjiahui.weblog.model.vo.category.FindCategoryListReqVO;
 import com.xiangjiahui.weblog.model.vo.category.FindCategoryListRspVO;
 import com.xiangjiahui.weblog.service.CategoryService;
 import lombok.extern.slf4j.Slf4j;
@@ -39,9 +40,18 @@ public class CategoryServiceImpl implements CategoryService {
 
 
     @Override
-    public List<FindCategoryListRspVO> findCategoryList() {
-        // 查询所有分类
-        List<CategoryDO> categoryDOS = categoryMapper.selectList(Wrappers.emptyWrapper());
+    public List<FindCategoryListRspVO> findCategoryList(FindCategoryListReqVO vo) {
+        Long size = vo.getSize();
+
+        List<CategoryDO> categoryDOS = null;
+        // 如果接口入参中未指定 size
+        if (Objects.isNull(size) || size == 0) {
+            // 查询所有分类
+            categoryDOS = categoryMapper.selectList(Wrappers.emptyWrapper());
+        } else {
+            // 否则查询指定的数量
+            categoryDOS = categoryMapper.selectByLimit(size);
+        }
 
         // DO 转 VO
         List<FindCategoryListRspVO> vos = null;
@@ -50,9 +60,11 @@ public class CategoryServiceImpl implements CategoryService {
                     .map(categoryDO -> FindCategoryListRspVO.builder()
                             .id(categoryDO.getId())
                             .name(categoryDO.getName())
+                            .articlesTotal(categoryDO.getArticlesTotal())
                             .build())
                     .collect(Collectors.toList());
         }
+
         return vos;
     }
 

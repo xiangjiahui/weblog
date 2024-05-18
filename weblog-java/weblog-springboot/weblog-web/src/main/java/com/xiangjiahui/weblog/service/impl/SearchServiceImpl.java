@@ -107,8 +107,6 @@ public class SearchServiceImpl implements SearchService {
             }
         });
 
-        String strip = StringUtils.strip(vos.toString(), "[]");
-        log.info("strip: {}", strip);
         return PageResponse.success(total, current, size, vos);
     }
 }

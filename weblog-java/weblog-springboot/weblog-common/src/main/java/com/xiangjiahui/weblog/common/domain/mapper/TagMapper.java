@@ -17,7 +17,7 @@ public interface TagMapper extends BaseMapper<TagDO> {
     default Page<TagDO> getPageList(long currentPage, long size, String name, LocalDate startDate, LocalDate endDate){
         Page<TagDO> page = new Page<>(currentPage,size);
         LambdaQueryWrapper<TagDO> wrapper = new LambdaQueryWrapper<>();
-        wrapper.select(TagDO::getId,TagDO::getName,TagDO::getCreateTime)
+        wrapper.select(TagDO::getId,TagDO::getName,TagDO::getCreateTime,TagDO::getArticlesTotal)
                 .like(Objects.nonNull(name),TagDO::getName,name)
                 .ge(Objects.nonNull(startDate),TagDO::getCreateTime,startDate)
                 .le(Objects.nonNull(endDate),TagDO::getCreateTime,endDate)

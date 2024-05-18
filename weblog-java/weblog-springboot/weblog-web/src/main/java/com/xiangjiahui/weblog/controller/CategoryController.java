@@ -4,6 +4,7 @@ import com.xiangjiahui.weblog.common.annotation.ApiOperationLog;
 import com.xiangjiahui.weblog.common.utils.PageResponse;
 import com.xiangjiahui.weblog.common.utils.Response;
 import com.xiangjiahui.weblog.model.vo.category.FindCategoryArticlePageListReqVO;
+import com.xiangjiahui.weblog.model.vo.category.FindCategoryListReqVO;
 import com.xiangjiahui.weblog.service.CategoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -28,8 +29,8 @@ public class CategoryController {
     @PostMapping("/list")
     @ApiOperation(value = "前台获取分类列表")
     @ApiOperationLog(description = "前台获取分类列表")
-    public ResponseEntity<Response> findCategoryList() {
-        return ResponseEntity.ok(Response.success(categoryService.findCategoryList()));
+    public ResponseEntity<Response> findCategoryList(@RequestBody @Validated FindCategoryListReqVO vo) {
+        return ResponseEntity.ok(Response.success(categoryService.findCategoryList(vo)));
     }
 
 

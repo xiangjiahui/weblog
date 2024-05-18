@@ -73,6 +73,7 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
                 rspVO.setId(categoryDO.getId());
                 rspVO.setName(categoryDO.getName());
                 rspVO.setCreateTime(categoryDO.getCreateTime());
+                rspVO.setArticlesTotal(categoryDO.getArticlesTotal());
                 return rspVO;
             }).collect(Collectors.toList());
             return PageResponse.success(categoryDOPage, collect);

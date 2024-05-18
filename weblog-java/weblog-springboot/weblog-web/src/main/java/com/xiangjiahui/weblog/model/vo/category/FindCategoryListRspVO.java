@@ -14,4 +14,6 @@ public class FindCategoryListRspVO {
     private Long id;
 
     private String name;
+
+    private Integer articlesTotal;
 }

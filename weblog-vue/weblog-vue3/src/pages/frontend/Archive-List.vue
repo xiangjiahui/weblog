@@ -58,7 +58,7 @@
 
 
   <!-- 分页 -->
-  <nav aria-label="Page navigation example" class="mt-10 flex justify-center" v-if="pages > 1">
+  <nav aria-label="Page navigation example" class="mt-10 flex justify-center" v-if="pages >= 1">
     <ul class="flex items-center -space-x-px h-10 text-base">
       <!-- 上一页 -->
       <li>
@@ -77,9 +77,9 @@
       </li>
       <!-- 页码 -->
       <li v-for="(pageNo, index) in pages" :key="index">
-        <a @click="getArchives(pageNo)"
+        <a @click="getArticles(pageNo)"
            class="flex items-center justify-center px-4 h-10 leading-tight border  dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-           :class="[pageNo === current ? 'text-blue-600  bg-blue-50 border-blue-300 hover:bg-blue-100 hover:text-blue-700' : 'text-gray-500 border-gray-300 bg-white hover:bg-gray-100 hover:text-gray-700']"
+           :class="[pageNo === current ? 'text-sky-600  bg-sky-50 border-sky-500 hover:bg-sky-100 hover:text-sky-700' : 'text-gray-500 border-gray-300 bg-white hover:bg-gray-100 hover:text-gray-700']"
         >
           {{ index + 1 }}
         </a>

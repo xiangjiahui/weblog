@@ -118,6 +118,12 @@ import { getBaseStatisticsInfo,getPublishArticleStatisticsInfo,getArticlePVStati
 import CountTo from '@/components/CountTo'
 import ArticlePublishCalendar from '@/components/ArticlePublishCalendar'
 import ArticlePVLineChat from '@/components/ArticleLineChat'
+import { onMounted } from 'vue'
+
+onMounted(() => {
+  // 移除 html 标签中的 class="dark"
+  document.documentElement.classList.remove('dark');
+})
 
 // 文章总数，默认值为 0
 const articleTotalCount = ref(0)

@@ -1,7 +1,7 @@
 package com.xiangjiahui.weblog.markdown;
 
-import com.xiangjiahui.weblog.markdown.provider.NofollowLinkAttributeProvider;
 import com.xiangjiahui.weblog.markdown.renderer.ImageNodeRenderer;
+import com.xiangjiahui.weblog.markdown.renderer.LinkNodeRenderer;
 import lombok.extern.slf4j.Slf4j;
 import org.commonmark.Extension;
 import org.commonmark.ext.gfm.tables.TablesExtension;
@@ -41,8 +41,9 @@ public class MarkdownHelper {
                  );
         PARSER = Parser.builder().extensions(extensions).build();
         HTML_RENDERER = HtmlRenderer.builder().extensions(extensions)
-                .attributeProviderFactory(context -> new NofollowLinkAttributeProvider())
+                //.attributeProviderFactory(context -> new NofollowLinkAttributeProvider())
                 .nodeRendererFactory(ImageNodeRenderer::new)
+                .nodeRendererFactory(LinkNodeRenderer::new)
                 .build();
     }
 

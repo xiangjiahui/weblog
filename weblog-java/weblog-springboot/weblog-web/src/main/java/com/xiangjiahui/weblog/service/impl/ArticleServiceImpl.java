@@ -10,6 +10,7 @@ import com.xiangjiahui.weblog.common.domain.mapper.*;
 import com.xiangjiahui.weblog.common.exception.BusinessException;
 import com.xiangjiahui.weblog.common.utils.PageResponse;
 import com.xiangjiahui.weblog.markdown.MarkdownHelper;
+import com.xiangjiahui.weblog.markdown.MarkdownStaticsUtil;
 import com.xiangjiahui.weblog.model.vo.article.*;
 import com.xiangjiahui.weblog.model.vo.category.FindCategoryListRspVO;
 import com.xiangjiahui.weblog.model.vo.tag.FindTagListRspVO;
@@ -156,12 +157,18 @@ public class ArticleServiceImpl implements ArticleService {
         // 查询正文
         ArticleContentDO articleContentDO = articleContentMapper.selectByArticleId(articleId);
 
+        // 计算 md 正文字数
+        Integer totalWords = MarkdownStaticsUtil.calculateWordCount(articleContentDO.getContent());
+        String readTime = MarkdownStaticsUtil.calculateReadingTime(totalWords);
+
         // DO 转 VO
         FindArticleDetailRspVO vo = FindArticleDetailRspVO.builder()
                 .title(articleDO.getTitle())
                 .createTime(articleDO.getCreateTime())
                 .content(MarkdownHelper.markdownToHtml(articleContentDO.getContent()))
                 .readNum(articleDO.getReadNum())
+                .totalWords(totalWords)
+                .readTime(readTime)
                 .build();
 
         // 查询所属分类

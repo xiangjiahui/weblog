@@ -141,7 +141,10 @@ const routers = [
 
 const router = createRouter({
     history: createWebHashHistory(),
-    routes: routers
+    routes: routers,
+    scrollBehavior(to, from, savedPosition) {
+        return { top: 0 }
+    }
 })
 
 export default router

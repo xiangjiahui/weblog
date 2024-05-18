@@ -1,4 +1,5 @@
-package com.xiangjiahui.weblog.model.vo.tag;
+package com.xiangjiahui.weblog.model.vo.category;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,11 +10,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class FindTagListRspVO {
+public class FindCategoryListReqVO {
 
-    private Long id;
-
-    private String name;
-
-    private Integer articlesTotal;
+    /**
+     * 展示数量
+     */
+    private Long size;
 }

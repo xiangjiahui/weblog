@@ -76,6 +76,7 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, TagDO> implements Tag
             rspVO.setId(tagDO.getId());
             rspVO.setName(tagDO.getName());
             rspVO.setCreateTime(tagDO.getCreateTime());
+            rspVO.setArticlesTotal(tagDO.getArticlesTotal());
             return rspVO;
         }).collect(Collectors.toList());
 

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xiangjiahui.weblog.common.utils.HttpUtil;
 import com.xiangjiahui.weblog.common.utils.RedisCommand;
 import com.xiangjiahui.weblog.common.utils.Response;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 @Configuration
+@Slf4j
 public class WebLogMVCConfig implements WebMvcConfigurer {
 
     private final RedisCommand redis;
@@ -41,14 +43,19 @@ public class WebLogMVCConfig implements WebMvcConfigurer {
 
             long current = System.currentTimeMillis();
 
-            redis.zSet(key,current,current);
-            redis.expire(key,seconds);
-            redis.zRemoveRangeByScore(key,0,current - seconds * 1000);
-            Long count = redis.zGet(key);
-            if (count > maxCount) {
-                fail(response);
-                return false;
+            try {
+                redis.zSet(key,current,current);
+                redis.expire(key,seconds);
+                redis.zRemoveRangeByScore(key,0,current - seconds * 1000);
+                Long count = redis.zGet(key);
+                if (count > maxCount) {
+                    fail(response);
+                    return false;
+                }
+            }catch (Exception e){
+                log.error("redis error: {}",e.getMessage());
             }
+
             return true;
         }
     }
