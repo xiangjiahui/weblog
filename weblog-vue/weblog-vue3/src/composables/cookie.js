@@ -57,3 +57,6 @@ export function setMenuList(menuList) {
         expires: new Date(expired)
     })
 }
+export function removeMenuList() {
+    return cookie.remove(MENU_LIST_KEY)
+}

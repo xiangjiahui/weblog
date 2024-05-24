@@ -16,6 +16,7 @@ import TagArticleList from '@/pages/frontend/Tag-Article-List'
 import ArticleDetail from '@/pages/frontend/ArticleDetail'
 import NotFound from '@/pages/frontend/404'
 import UserList from '@/pages/admin/UserList'
+import AdminCommentList from '@/pages/admin/Comment-List'
 
 const routers = [
     {
@@ -83,6 +84,13 @@ const routers = [
                 component: UserList,
                 meta: {
                     title: '用户管理'
+                }
+            },
+            {
+                path: '/admin/comment/list',
+                component: AdminCommentList,
+                meta: {
+                    title: '评论管理'
                 }
             }
         ]

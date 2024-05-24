@@ -170,6 +170,9 @@
             </nav>
           </article>
         </div>
+
+        <!-- 评论组件 -->
+        <Comment></Comment>
       </div>
 
       <!-- 右边侧边栏，占用一列 -->
@@ -206,6 +209,7 @@ import TagListCard from '@/layouts/frontend/components/TagListCard.vue'
 import CategoryListCard from '@/layouts/frontend/components/CategoryListCard.vue'
 import ScrollToTopButton from '@/layouts/frontend/components/ScrollToTopButton'
 import Toc from '@/layouts/frontend/components/Toc'
+import Comment from '@/components/Comment'
 import {useRoute, useRouter} from 'vue-router'
 import {ref, watch, onMounted, nextTick} from 'vue'
 import {getArticleDetail} from '@/api/frontend/article'

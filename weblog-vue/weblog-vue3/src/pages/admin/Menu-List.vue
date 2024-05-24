@@ -80,13 +80,13 @@
       <FormDialog ref="formDialogRef" title="添加菜单" destroyOnClose @submit="onSubmit">
         <el-form ref="formRef" :rules="rules" :model="form">
           <el-form-item label="菜单名称" prop="name" label-width="80px" size="large">
-            <el-input v-model="form.name" placeholder="请输入菜单名称" maxlength="6" show-word-limit clearable/>
+            <el-input v-model="form.name" placeholder="请输入菜单名称" maxlength="10" show-word-limit clearable/>
           </el-form-item>
           <el-form-item label="路由路径" prop="path" label-width="80px" size="large">
-            <el-input v-model="form.path" placeholder="请输入路由Path" maxlength="15" show-word-limit clearable/>
+            <el-input v-model="form.path" placeholder="请输入路由Path" maxlength="25" show-word-limit clearable/>
           </el-form-item>
           <el-form-item label="图标类型" prop="icon" label-width="80px" size="large">
-            <el-input v-model="form.icon" placeholder="请输入菜单图标类型" maxlength="8" show-word-limit clearable/>
+            <el-input v-model="form.icon" placeholder="请输入菜单图标类型" maxlength="20" show-word-limit clearable/>
           </el-form-item>
         </el-form>
       </FormDialog>
@@ -110,6 +110,7 @@ import { ref,reactive } from 'vue'
 import {addMenu, getAllMenu, getPageMenuList} from '@/api/admin/menu'
 import FormDialog from '@/components/FormDialog'
 import {showMessage} from "@/composables/util";
+import {removeMenuList} from "@/composables/cookie";
 
 
 const formRef = ref(null)
@@ -134,7 +135,7 @@ const rules = {
       message: '分类名称不能为空',
       trigger: 'blur',
     },
-    { min: 1, max: 6, message: '菜单名称字数要求大于 1 个字符，小于 6 个字符', trigger: 'blur' },
+    { min: 1, max: 10, message: '菜单名称字数要求大于 1 个字符，小于 10 个字符', trigger: 'blur' },
   ],
   path: [
     {
@@ -142,7 +143,7 @@ const rules = {
       message: '路由Path不能为空',
       trigger: 'blur',
     },
-    {min: 1, max: 15, message: '路由Path字数要求大于 1 个字符，小于 15 个字符', trigger: 'blur'}
+    {min: 1, max: 25, message: '路由Path字数要求大于 1 个字符，小于 25 个字符', trigger: 'blur'}
   ],
   icon: [
     {
@@ -150,7 +151,7 @@ const rules = {
       message: '菜单图标类型不能为空',
       trigger: 'blur',
     },
-    {min: 1, max: 8, message: '菜单图标类型字数要求大于 1 个字符，小于 8 个字符', trigger: 'blur'}
+    {min: 1, max: 20, message: '菜单图标类型字数要求大于 1 个字符，小于 20 个字符', trigger: 'blur'}
   ]
 }
 
@@ -188,7 +189,6 @@ const addMenuClick = () => {
   formDialogRef.value.open()
 }
 
-
 const onSubmit = () => {
   formRef.value.validate((valid) => {
     if (!valid) {
@@ -205,6 +205,7 @@ const onSubmit = () => {
         form.name = ''
         form.path = ''
         form.icon = ''
+        removeMenuList()
         // 隐藏对话框
         // dialogVisible.value = false
         formDialogRef.value.close()

@@ -1,15 +1,13 @@
 import axios from 'axios';
 import { getToken } from '@/composables/cookie';
 import {showMessage} from '@/composables/util';
-import {removeToken} from '@/composables/cookie';
 import {useUserStore} from "@/stores/user";
 import { useRouter } from "vue-router";
-import { throttle } from 'lodash-es'
 
 const router = useRouter();
 
 const log_service = axios.create({
-    baseURL: 'http://192.168.1.8:8088',
+    baseURL: 'http://192.168.1.2:8088',
     timeout: 5000,
     headers: {
         'Content-Type': 'application/json;charset=utf-8'

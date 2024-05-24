@@ -3,6 +3,9 @@
     <!-- 卡片组件， shadow="never" 指定 card 卡片组件没有阴影 -->
     <el-card shadow="never">
       <el-form ref="formRef" :model="form" label-width="160px" :rules="rules">
+        <el-form-item>
+          <h2 class="font-bold text-base mb-1">基础设置</h2>
+        </el-form-item>
         <el-form-item label="博客名称" prop="name">
           <el-input v-model="form.name" clearable />
         </el-form-item>
@@ -31,6 +34,13 @@
         </el-form-item>
         <el-form-item label="介绍语" prop="introduction">
           <el-input v-model="form.introduction" type="textarea" />
+        </el-form-item>
+
+        <!-- 分割线 -->
+        <el-divider />
+
+        <el-form-item>
+          <h2 class="font-bold text-base mb-1">第三方平台设置</h2>
         </el-form-item>
         <!-- 开启 Github 访问 -->
         <el-form-item label="开启 GihHub 访问">
@@ -68,6 +78,36 @@
           <el-input v-model="form.csdnHomepage" clearable placeholder="请输入 CSDN 主页访问的 URL" />
         </el-form-item>
 
+        <!-- 分割线 -->
+        <el-divider />
+
+        <el-form-item>
+          <h2 class="font-bold text-base mb-1">评论设置</h2>
+        </el-form-item>
+        <el-form-item label="敏感词过滤">
+          <el-switch v-model="form.isCommentSensiWordOpen" inline-prompt :active-icon="Check" :inactive-icon="Close"
+                     @change="sensiWordSwitchChange"/>
+          <div class="flex items-center ml-3">
+            <el-icon class="mr-2" color="#909399"><InfoFilled /></el-icon>
+            <el-text class="mx-1" type="info"  size="small">开启后，系统自动对发表的每条评论进行敏感词过滤</el-text>
+          </div>
+        </el-form-item>
+        <el-form-item label="开启审核">
+          <el-switch v-model="form.isCommentExamineOpen" inline-prompt :active-icon="Check" :inactive-icon="Close"
+                     @change="examineSwitchChange"/>
+          <div class="flex items-center ml-3">
+            <el-icon class="mr-2" color="#909399"><InfoFilled /></el-icon>
+            <el-text class="mx-1" type="info"  size="small">开启后，评论需要博主后台审核通过后，才会展示出来</el-text>
+          </div>
+        </el-form-item>
+        <el-form-item label="博主邮箱">
+          <el-input v-model="form.mail" clearable placeholder="请输入博主邮箱地址" />
+          <div class="flex items-center">
+            <el-icon class="mr-2" color="#909399"><InfoFilled /></el-icon>
+            <el-text class="mx-1" type="info"  size="small">当被评论后，用于主动发送邮件通知博主</el-text>
+          </div>
+        </el-form-item>
+
         <el-form-item>
           <el-button type="primary" :loading="btnLoading" @click="onSubmit">保存</el-button>
         </el-form-item>
@@ -93,6 +133,9 @@ const form = reactive({
   giteeHomepage: '',
   zhihuHomepage: '',
   csdnHomepage: '',
+  isCommentSensiWordOpen: true, // 是否开启评论敏感词过滤
+  isCommentExamineOpen: false, // 是否开启评论审核
+  mail: '' // 博主邮箱
 })
 
 // 是否显示保存按钮的 loading 状态，默认为 false
@@ -179,6 +222,15 @@ function initBlogSettings() {
         isCSDNChecked.value = true
         form.csdnHomepage = e.data.csdnHomepage
       }
+
+      if (e.data.csdnHomepage) {
+        isCSDNChecked.value = true
+        form.csdnHomepage = e.data.csdnHomepage
+      }
+
+      form.isCommentSensiWordOpen = e.data.isCommentSensiWordOpen
+      form.isCommentExamineOpen = e.data.isCommentExamineOpen
+      form.mail = e.data.mail
     }
   }).catch(error => {})
 }
@@ -230,6 +282,11 @@ const onSubmit = () => {
         .finally(() => btnLoading.value = false) // 隐藏保存按钮 loading
   })
 }
+
+// 评论敏感词过滤 switch 组件 change 事件
+const sensiWordSwitchChange = (checked) => form.isCommentSensiWordOpen = checked
+// 评论审核 switch 组件 change 事件
+const examineSwitchChange = (checked) => form.isCommentExamineOpen = checked
 </script>
 
 <style scoped>

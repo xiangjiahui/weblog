@@ -17,10 +17,10 @@
     </div>
     <div class="flex flex-col col-span-2 order-1 md:col-span-1 md:order-2 bg-white dark:bg-gray-800">
       <!-- 白天黑夜开关，ml-auto 靠右显示 -->
-      <label class="switch ml-auto mt-4 mr-4">
-        <input type="checkbox" v-model="isLight" @click="toggleDark()">
-        <span class="slider"></span>
-      </label>
+<!--      <label class="switch ml-auto mt-4 mr-4">-->
+<!--        <input type="checkbox" v-model="isLight" @click="toggleDark()">-->
+<!--        <span class="slider"></span>-->
+<!--      </label>-->
       <!-- flex-col 用于指定子元素垂直排列 -->
       <div class="flex justify-center items-center h-full flex-col animate__animated animate__bounceInRight animate__fast">
         <!-- 大标题，设置字体粗细、大小、下边距 -->
