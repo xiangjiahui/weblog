@@ -3,6 +3,7 @@ package com.xiangjiahui.weblog.admin.service.impl;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xiangjiahui.weblog.admin.domains.vo.article.*;
 import com.xiangjiahui.weblog.admin.event.DeleteArticleEvent;
+import com.xiangjiahui.weblog.admin.event.PublishArticleEvent;
 import com.xiangjiahui.weblog.admin.event.UpdateArticleEvent;
 import com.xiangjiahui.weblog.admin.service.AdminArticleService;
 import com.xiangjiahui.weblog.common.domain.dos.*;
@@ -91,6 +92,7 @@ public class AdminArticleServiceImpl implements AdminArticleService {
 
         List<String> tags = vo.getTags();
         insertTags(tags,articleID);
+        eventPublisher.publishEvent(new PublishArticleEvent(this, articleID));
         return true;
     }
 
